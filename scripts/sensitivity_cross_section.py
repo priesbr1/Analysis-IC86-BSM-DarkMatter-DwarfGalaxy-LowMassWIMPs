@@ -138,6 +138,7 @@ print("Average baseline:", baseline)
 
 energy_list, energy_ranges, nbins = get_energy_ranges(args.channel,args.mass)
 erange = energy_ranges[energy_list.index(args.mass)]
+erange = tuple([max(erange[0],min(data[0][mask])), args.mass])
 
 # Injector
 inj = PointSourceInjector(spectrum=spectra, E0=spectra.E0, e_range=erange)
