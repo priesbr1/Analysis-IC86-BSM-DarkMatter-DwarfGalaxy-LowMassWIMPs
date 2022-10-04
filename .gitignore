@@ -1,5 +1,9 @@
 *.ipynb
 __pycache__/
-data/
+data/cross_section_results/
+data/energy_optimization/
+data/energy_optimization_NoEW/
+data/pdfs/
+data/trials_results/
 testing/
 SkyLab/
