@@ -29,40 +29,11 @@ parser.add_argument("-u", "--sources", type=str, default="/mnt/home/priesbr1/DM_
                     dest="sources", help="file containing RA, dec, and J-factor information for each source")
 parser.add_argument("-b", "--background_trials", type=str, default="/mnt/home/priesbr1/DM_Search/data/trials_results/trials_bkg_360deg_Jmax/",
                     dest="background_trials", help="folder containing results from background trials")
-parser.add_argument("-s", "--signal_trials", type=str, default="/mnt/home/priesbr1/DM_Search/data/trials_results/trials_sig_360deg_Jmax_modified/",
+parser.add_argument("-s", "--signal_trials", type=str, default="/mnt/home/priesbr1/DM_Search/data/trials_results/trials_sig_360deg_Jmax_distributed/",
                     dest="signal_trials", help="folder containing results from signal trials")
-parser.add_argument("-o", "--outfile", type=str, default="/mnt/home/priesbr1/DM_Search/data/cross_section_results/cross_section_results_360deg_Jmax_modified_erange.npy",
+parser.add_argument("-o", "--outfile", type=str, default="/mnt/home/priesbr1/DM_Search/data/cross_section_results/cross_section_results_360deg_Jmax_distributed_erange.npy",
                     dest="outfile", help="outfile to save results to")
 args = parser.parse_args()
-
-def get_energy_ranges(channel, mass):
-    if channel not in ["b", "Tau", "Mu", "W", "Nu"]:
-        raise TypeError("Channel (%s) not recognized -- must be one of b/Mu/Tau/W/Nu"%channel)
-
-    if channel == "b":
-        energy_list = [10, 20, 30, 50, 80, 100, 150, 200, 300]
-        energy_ranges = [(0,12), (0,18), (0,25), (0,38), (0,57), (0,73), (0,108), (3,152), (6,256)]
-        nbins = 36
-    if channel == "Mu":
-        energy_list = [5, 10, 20, 30, 50, 80, 100, 150, 200, 300]
-        energy_ranges = [(0,9), (0,16), (3,30), (6,43), (16,49), (24,107), (31,129), (48,199), (66,266), (100,389)]
-        nbins = 36
-    if channel == "Tau":
-        energy_list = [5, 10, 20, 30, 50, 80, 100, 150, 200, 300]
-        energy_ranges = [(0,9), (0,16), (0,30), (4,44), (12,71), (20,108), (27,138), (40,205), (57,272), (92,389)]
-        nbins = 36
-    if channel == "W":
-        energy_list = [90, 100, 150, 200, 300]
-        energy_ranges = [(27,108), (31,128), (54,207), (82,298), (120,448)]
-        nbins = 36
-    if channel == "Nu":
-        energy_list = [5, 10, 20, 30, 50, 80, 100, 150, 200, 300]
-        energy_ranges = [(1,12), (0,21), (12,39), (19,53), (34,83), (56,128), (70,159), (113,234), (148,298), (234,441)]
-        nbins = 36
-
-    if mass not in energy_list:
-        raise TypeError("Energy range not available for mass %i -- mass must be one of %s"%(mass, energy_list))
-    return [energy_list, energy_ranges, nbins]
 
 # Set up data
 sample = 'PointSourceDRAGON_v001p00'  # PointSourceTracks_v00?p0?, GFU, PointSourceDRAGON_v001p00, etc.
@@ -136,9 +107,7 @@ for season in seasons:
 baseline /= len(seasons)
 print("Average baseline:", baseline)
 
-energy_list, energy_ranges, nbins = get_energy_ranges(args.channel,args.mass)
-erange = energy_ranges[energy_list.index(args.mass)]
-erange = tuple([max(erange[0],min(data[0][mask])), args.mass])
+erange = tuple([min(data[0][mask]), args.mass])
 
 # Injector
 inj = PointSourceInjector(spectrum=spectra, E0=spectra.E0, e_range=erange)
