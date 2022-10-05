@@ -7,9 +7,9 @@ import os, sys
 import glob
 
 parser = argparse.ArgumentParser()
-parser.add_argument("-t", "--trials", type=str, default="/mnt/home/priesbr1/DM_Search/data/trials_results/trials_sig_360deg_Jmax_modified/sig_trials_*_*.txt",
+parser.add_argument("-t", "--trials", type=str, default="/mnt/home/priesbr1/DM_Search/data/trials_results/trials_sig_360deg_Jmax_distributed/sig_trials_*_*.txt",
                     dest="trials", help="file(s) containing signal trials to plot")
-parser.add_argument("-o", "--outfolder", type=str, default="/mnt/scratch/priesbr1/DM_Search/Plots/signal_trials/TS_360deg_Jmax_modified/",
+parser.add_argument("-o", "--outfolder", type=str, default="/mnt/scratch/priesbr1/DM_Search/Plots/signal_trials/TS_360deg_Jmax_distributed/",
                     dest="outfolder", help="folder to save output plots to")
 args = parser.parse_args()
 

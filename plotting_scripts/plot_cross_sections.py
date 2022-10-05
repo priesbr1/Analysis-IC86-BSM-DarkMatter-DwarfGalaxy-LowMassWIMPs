@@ -7,7 +7,7 @@ import os, sys
 import glob
 
 parser = argparse.ArgumentParser()
-parser.add_argument("-f", "--file", type=str, default="/mnt/home/priesbr1/DM_Search/data/cross_section_results/cross_section_results_360deg_Jmax_modified.npy",
+parser.add_argument("-f", "--file", type=str, default="/mnt/home/priesbr1/DM_Search/data/cross_section_results/cross_section_results_360deg_Jmax_distributed_erange.npy",
                     dest="filename", help="filename with cross section results")
 parser.add_argument("-c", "--comparison", type=str, default="/mnt/home/priesbr1/DM_Search/data/comparison_data/",
                     dest="comparison", help="folder containing cross seciton results to compare to")
@@ -42,7 +42,7 @@ ax.set_ylabel(r"$\langle \sigma v \rangle$ [cm$^{3}$ s$^{-1}$]", fontsize=12)
 ax.legend(loc="best", ncol=2, prop={"size":12}, labelspacing=0.5)
 ax.grid(color="grey", linestyle="-", linewidth=0.5, alpha=0.5)
 plt.tight_layout()
-plt.savefig(args.output + "cross_section_results_360deg_Jmax_modified.png")
+plt.savefig(args.output + "cross_section_results_360deg_Jmax_distributed_erange.png")
 print("Finished solo plot")
 
 comps = dict()
@@ -101,5 +101,5 @@ ax.set_ylabel(r"$\langle \sigma v \rangle$ [cm$^{3}$ s$^{-1}$]", fontsize=12)
 ax.legend(bbox_to_anchor=(1.04,0.5), loc="center left", prop={"size":12}, labelspacing=0.5)
 ax.grid(color="grey", linestyle="-", linewidth=0.5, alpha=0.5)
 plt.tight_layout()
-plt.savefig(args.output + "cross_section_results_comparison_360deg_Jmax_modified.png")
+plt.savefig(args.output + "cross_section_results_comparison_360deg_Jmax_distributed_erange.png")
 print("Finished comparison plot")
