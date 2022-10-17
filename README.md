@@ -10,8 +10,10 @@ Software requirements:
 
 Data:
 * DRAGON dataset
-* PPPC spectra
+* [PPPC](http://www.marcocirelli.net/PPPC4DMID.html) spectra
 * dwarf galaxy data (RA/dec, angular sizes, J-factors)
+* MC data for energy optimization
+* comparison cross section results from other analyses
 
 ## Files
 Analysis scripts are located in the `scripts` directory:
