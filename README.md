@@ -39,13 +39,13 @@ Plotting scripts are located in the `plotting_scripts` directory:
 * `plot_variables.py` - plots distributions of variables in DRAGON data
 
 Example job submission scripts (in SLURM format) are located in the `submission_scripts_SLURM` directory:
-* background_pdf_trials.sb
-* energy_range_optimization.sb
-* generate_background_pdfs.sb
-* generate_signal_pdfs.sb
-* i3_to_npy_exp.sb
-* i3_to_npy_MC.sb
-* signal_pdf_trials.sb
+* `background_pdf_trials.sb`
+* `energy_range_optimization.sb`
+* `generate_background_pdfs.sb`
+* `generate_signal_pdfs.sb`
+* `i3_to_npy_exp.sb`
+* `i3_to_npy_MC.sb`
+* `signal_pdf_trials.sb`
 
 ## Recommended Procedure
 
