@@ -47,7 +47,7 @@ Plotting scripts are located in the `plotting_scripts` directory:
 2. `python scripts/i3_to_npy.py --files "Level5p_IC862013_genie_numu.014674.??????.i3.bz2" --inpath "/mnt/research/IceCube/jpandre/Matt/Level5p/numu/14674/" --outpath "<name of output folder for npy DRAGON data>" --MC 1`  
   a. This only needs to be run if the DRAGON data is not already in `npy` format.  
   b. This only processes MC data from 2013. This is taken to be the same MC data for all years (2011-2017).  
-3. `python scripts/DM_neutrino oscillations.py --oscillated 0 --output "<name of output folder for plots>" --flux_units 0`  
+3. `python scripts/DM_neutrino_oscillations.py --datafolder "/mnt/home/priesbr1/DM_Search/data/annihilation_spectra/" --oscillated 0 --output "<name of output folder for plots>" --flux_units 0`  
 4. `python scripts/energy_range_optimization.py --datafolder "/mnt/research/IceCube/jpandre/Matt/level5p/" --spectra "<name of npy file where spectra are stored from (3)>" --channel "b" --mass 10 --part 0 --outfolder "<name of output folder for text files>"`  
   a. This should be run as a job array of 10 jobs (10 hours, 20GB).  
   b. The `part` argument should be passed as the job array ID (one of 0-9).  
@@ -68,7 +68,7 @@ Plotting scripts are located in the `plotting_scripts` directory:
 10. `python plotting_scripts/plot_cross_sections.py --file "<name of output npy file with cross sections from (10)>" --comparison "/mnt/home/priesbr1/DM_Search/data/comparison_data/" --output "<name of output folder for plots>"`  
 
 ### Madison Cluster
-1. `python scripts/DM_neutrino oscillations.py --oscillated 0 --output "<name of output folder for plots>" --flux_units 0`  
+1. `python scripts/DM_neutrino_oscillations.py --datafolder "/data/ana/BSM/IC86_LE_WIMP_dwarfgalaxy/annihilation_spectra/" --oscillated 0 --output "<name of output folder for plots>" --flux_units 0`  
 2. `python scripts/energy_range_optimization.py --datafolder "/data/ana/BSM/IC86_LE_WIMP_dwarfgalaxy/energy_optimization_MC/" --spectra "<name of npy file where spectra are stored from (1)>" --channel "b" --mass 10 --part 0 --outfolder "<name of output folder for text files>"`  
   a. This should be run as a job array of 10 jobs (10 hours, 20GB).  
   b. The `part` argument should be passed as the job array ID (one of 0-9).  
