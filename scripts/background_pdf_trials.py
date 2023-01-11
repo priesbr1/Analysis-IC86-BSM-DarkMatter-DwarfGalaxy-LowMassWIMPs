@@ -99,7 +99,7 @@ def run_bkg_trials(bkg_pdfs, sig_pdfs, names, J_factors, args, outfile, num_bkg_
         
         bf = int(np.round(np.sum(bfs * J_factors/np.sum(J_factors))))
         #print("Best-fit signal events:", bf)
-        ts = np.sum(np.array(tss) * J_factors/np.sum(J_factors)) * len(names)
+        ts = np.sum(np.array(tss) * J_factors/np.sum(J_factors))
         #print("TS:", ts)
         
         t2_trial = time.time()
