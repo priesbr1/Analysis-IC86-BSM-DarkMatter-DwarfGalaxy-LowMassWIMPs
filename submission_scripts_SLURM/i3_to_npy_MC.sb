@@ -1,0 +1,21 @@
+#!/bin/bash --login
+
+########### SBATCH Lines for Resource Request ##########
+
+#SBATCH --time=23:59:00             # limit of wall clock time - how long the job will run (same as -t)
+#SBATCH --nodes=1                 # number of different nodes - could be an exact number or a range of nodes (same as -N)
+#SBATCH --mem=20G            # memory required per allocated CPU (or core) - amount of memory (in bytes)
+#SBATCH --job-name i3_to_npy_14674      # you can give your job a name for easier identification (same as -J)
+#SBATCH --output i3_to_npy_log
+
+########### Command Lines to Run ##########
+source activate tfgpu-brandon
+
+cd /mnt/home/priesbr1/DM_Search/
+source /mnt/home/priesbr1/DM_Search/setup_combo_stable.sh
+
+echo "python i3_to_npy.py --files 'Level5p_IC86.2013_genie_numu.014674.??????.i3.bz2' --inpath '/mnt/research/IceCube/jpandre/Matt/level5p/numu/14674/' --outpath '/mnt/research/IceCube/datasets/ps_DRAGON/version-001-p00/' --MC 1"
+
+python i3_to_npy.py --files 'Level5p_IC86.2013_genie_numu.014674.??????.i3.bz2' --inpath '/mnt/research/IceCube/jpandre/Matt/level5p/numu/14674/' --outpath '/mnt/research/IceCube/datasets/ps_DRAGON/version-001-p00/' --MC 1
+
+exit $?

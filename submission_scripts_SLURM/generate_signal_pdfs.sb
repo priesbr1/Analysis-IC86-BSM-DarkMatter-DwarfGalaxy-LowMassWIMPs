@@ -1,0 +1,19 @@
+#!/bin/bash --login
+
+########### SBATCH Lines for Resource Request ##########
+
+#SBATCH --time=11:59:00             # limit of wall clock time - how long the job will run (same as -t)
+#SBATCH --nodes=1                 # number of different nodes - could be an exact number or a range of nodes (same as -N)
+#SBATCH --mem=20G            # memory required per allocated CPU (or core) - amount of memory (in bytes)
+#SBATCH --job-name DM_signal_pdfs     # you can give your job a name for easier identification (same as -J)
+#SBATCH --output dm_pdfs_log
+
+########### Command Lines to Run ##########
+source activate tfgpu-brandon
+
+cd /mnt/home/priesbr1/DM_Search/
+echo "python generate_signal_pdfs.py --data '/mnt/research/IceCube/datasets/ps_DRAGON/version-001-p00/IC86_201?_MC.npy' --spectra '/mnt/home/priesbr1/DM_Search/data/annihilation_spectra/DM_CirelliSpectrum_dict_neutrinos_oscillated.npy' --channel 'b' --output '/mnt/home/priesbr1/DM_Search/data/pdfs/DRAGON_signal_pdfs.npy'"
+
+python generate_signal_pdfs.py --data '/mnt/research/IceCube/datasets/ps_DRAGON/version-001-p00/IC86_201?_MC.npy' --spectra '/mnt/home/priesbr1/DM_Search/data/annihilation_spectra/DM_CirelliSpectrum_dict_neutrinos_oscillated.npy' --channel 'b' --output '/mnt/home/priesbr1/DM_Search/data/pdfs/DRAGON_signal_pdfs.npy'
+
+exit $?

@@ -1,0 +1,21 @@
+#!/bin/bash --login
+
+########### SBATCH Lines for Resource Request ##########
+
+#SBATCH --time=9:59:00             # limit of wall clock time - how long the job will run (same as -t)
+#SBATCH --nodes=1                 # number of different nodes - could be an exact number or a range of nodes (same as -N)
+#SBATCH --mem=20G            # memory required per allocated CPU (or core) - amount of memory (in bytes)
+#SBATCH --job-name DM_energy_ranges     # you can give your job a name for easier identification (same as -J)
+#SBATCH --output dm_energy_ranges_log
+
+########### Command Lines to Run ##########
+source activate tfgpu-brandon
+
+cd /mnt/home/priesbr1/DM_Search/
+source /mnt/home/priesbr1/DM_Search/setup_combo_stable.sh
+
+echo "python energy_range_optimization.py --datafolder '/mnt/research/IceCube/jpandre/Matt/level5p/' --spectra '/mnt/home/priesbr1/DM_Search/data/annihilation_spectra/DM_CirelliSpectrum_dict_neutrinos_oscillated.npy' --channel 'b' --mass 10 --part $SLURM_ARRAY_TASK_ID --outfolder '/mnt/home/priesbr1/DM_Search/energy_optimization/'"
+
+python energy_range_optimization.py --datafolder '/mnt/research/IceCube/jpandre/Matt/level5p/' --spectra '/mnt/home/priesbr1/DM_Search/data/annihilation_spectra/DM_CirelliSpectrum_dict_neutrinos_oscillated.npy' --channel 'b' --mass 10 --part $SLURM_ARRAY_TASK_ID --outfolder '/mnt/home/priesbr1/DM_Search/energy_optimization/'
+
+exit $?

@@ -1,0 +1,21 @@
+#!/bin/bash --login
+
+########### SBATCH Lines for Resource Request ##########
+
+#SBATCH --time=11:59:00             # limit of wall clock time - how long the job will run (same as -t)
+#SBATCH --nodes=1                 # number of different nodes - could be an exact number or a range of nodes (same as -N)
+#SBATCH --constraint="[lac|amr]"  # run only on lac or amr nodes (same as -C)
+#SBATCH --cpus-per-task=2      # number of cores per node (same as -c)
+#SBATCH --mem=5G            # memory required per allocated CPU (or core) - amount of memory (in bytes)
+#SBATCH --job-name DM_background_pdf_trials     # you can give your job a name for easier identification (same as -J)
+#SBATCH --output dm_trials_log
+
+########### Command Lines to Run ##########
+source activate tfgpu-brandon
+
+cd /mnt/home/priesbr1/DM_Search/
+echo "python background_pdf_trials.py --bkg_pdfs '/mnt/home/priesbr1/DM_Search/data/pdfs/DRAGON_background_pdfs_360deg.npy' --sig_pdfs '/mnt/home/priesbr1/DM_Search/data/pdfs/DRAGON_signal_pdfs.npy' --sources '/mnt/home/priesbr1/DM_Search/data/analysis_sources_ra_dec_jfactors.txt' --channel 'b' --mass 10 --num_trials 10 --outfolder '/mnt/home/priesbr1/DM_Search/data/trials_results/trials_bkg_360deg_Jmax/'"
+
+python background_pdf_trials.py --bkg_pdfs '/mnt/home/priesbr1/DM_Search/data/pdfs/DRAGON_background_pdfs_360deg.npy' --sig_pdfs '/mnt/home/priesbr1/DM_Search/data/pdfs/DRAGON_signal_pdfs.npy' --sources '/mnt/home/priesbr1/DM_Search/data/analysis_sources_ra_dec_jfactors.txt' --channel 'b' --mass 10 --num_trials 10 --outfolder '/mnt/home/priesbr1/DM_Search/data/trials_results/trials_bkg_360deg_Jmax/'
+
+exit $?
