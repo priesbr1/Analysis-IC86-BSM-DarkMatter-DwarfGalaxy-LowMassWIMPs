@@ -19,3 +19,5 @@ echo "python i3_to_npy.py --files 'Level5p_IC86.2011_data.??????.i3.bz2' --inpat
 python i3_to_npy.py --files 'Level5p_IC86.2011_data.??????.i3.bz2' --inpath '/gpfs/home/binfalse-002/neergarr/icecube/data_symlink/' --outpath '/mnt/research/IceCube/datasets/ps_DRAGON/version-001-p00/' --MC 0
 
 exit $?
+
+### SUBMISSION COMMAND: "sbatch submission_scripts_SLURM/i3_to_npy_exp.sb"

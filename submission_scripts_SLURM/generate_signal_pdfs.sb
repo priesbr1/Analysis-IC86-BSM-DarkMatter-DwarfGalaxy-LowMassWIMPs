@@ -17,3 +17,5 @@ echo "python generate_signal_pdfs.py --data '/mnt/research/IceCube/datasets/ps_D
 python generate_signal_pdfs.py --data '/mnt/research/IceCube/datasets/ps_DRAGON/version-001-p00/IC86_201?_MC.npy' --spectra '/mnt/home/priesbr1/DM_Search/data/annihilation_spectra/DM_CirelliSpectrum_dict_neutrinos_oscillated.npy' --channel 'b' --output '/mnt/home/priesbr1/DM_Search/data/pdfs/DRAGON_signal_pdfs.npy'
 
 exit $?
+
+### SUBMISSION COMMAND: "sbatch submission_scripts_SLURM/generate_signal_pdfs.sb"

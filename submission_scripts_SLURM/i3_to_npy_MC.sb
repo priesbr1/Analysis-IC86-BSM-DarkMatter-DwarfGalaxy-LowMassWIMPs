@@ -19,3 +19,5 @@ echo "python i3_to_npy.py --files 'Level5p_IC86.2013_genie_numu.014674.??????.i3
 python i3_to_npy.py --files 'Level5p_IC86.2013_genie_numu.014674.??????.i3.bz2' --inpath '/mnt/research/IceCube/jpandre/Matt/level5p/numu/14674/' --outpath '/mnt/research/IceCube/datasets/ps_DRAGON/version-001-p00/' --MC 1
 
 exit $?
+
+### SUBMISSION COMMAND: "sbatch submission_scripts_SLURM/i3_to_npy_MC.sb"

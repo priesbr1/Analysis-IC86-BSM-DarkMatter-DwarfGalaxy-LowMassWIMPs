@@ -17,3 +17,5 @@ echo "python generate_background_pdfs.py --data '/mnt/research/IceCube/datasets/
 python generate_background_pdfs.py --data '/mnt/research/IceCube/datasets/ps_DRAGON/version-001-p00/IC86_201?_exp.npy' --sources '/mnt/home/priesbr1/DM_Search/data/analysis_sources_ra_dec_jfactors.txt' --channel 'b' --mass 10 --band_size 360 --output '/mnt/home/priesbr1/DM_Search/data/pdfs/DRAGON_background_pdfs_360deg.npy'
 
 exit $?
+
+### SUBMISSION COMMAND: "sbatch submission_scripts_SLURM/generate_background_pdfs.sb"

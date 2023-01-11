@@ -19,3 +19,5 @@ echo "python background_pdf_trials.py --bkg_pdfs '/mnt/home/priesbr1/DM_Search/d
 python background_pdf_trials.py --bkg_pdfs '/mnt/home/priesbr1/DM_Search/data/pdfs/DRAGON_background_pdfs_360deg.npy' --sig_pdfs '/mnt/home/priesbr1/DM_Search/data/pdfs/DRAGON_signal_pdfs.npy' --sources '/mnt/home/priesbr1/DM_Search/data/analysis_sources_ra_dec_jfactors.txt' --channel 'b' --mass 10 --num_trials 10 --outfolder '/mnt/home/priesbr1/DM_Search/data/trials_results/trials_bkg_360deg_Jmax/'
 
 exit $?
+
+### SUBMISSION COMMAND: "sbatch --array=1-500 submission_scripts_SLURM/background_pdf_trials.sb"

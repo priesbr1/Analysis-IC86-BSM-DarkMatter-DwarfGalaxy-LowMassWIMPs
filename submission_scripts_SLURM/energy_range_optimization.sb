@@ -19,3 +19,5 @@ echo "python energy_range_optimization.py --datafolder '/mnt/research/IceCube/jp
 python energy_range_optimization.py --datafolder '/mnt/research/IceCube/jpandre/Matt/level5p/' --spectra '/mnt/home/priesbr1/DM_Search/data/annihilation_spectra/DM_CirelliSpectrum_dict_neutrinos_oscillated.npy' --channel 'b' --mass 10 --part $SLURM_ARRAY_TASK_ID --outfolder '/mnt/home/priesbr1/DM_Search/energy_optimization/'
 
 exit $?
+
+### SUBMISSION COMMAND: "sbatch --array=0-9 submission_scripts_SLURM/energy_range_optimization.sb"
