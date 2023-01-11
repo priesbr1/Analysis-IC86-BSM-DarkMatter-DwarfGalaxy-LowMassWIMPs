@@ -40,29 +40,35 @@ for trial_set in sig_trials:
     TS = np.array(TS)
     
     ni_vals = sorted(np.unique(ni))
-    ns_avgs = []
-    TS_avgs = []
+    ns_med, ns_low, ns_high = [], [], []
+    TS_med, TS_low, TS_high = [], [], []
     
     for n_inj in ni_vals:
-        ns_avgs.append(np.mean(ns[ni == n_inj]))
-        TS_avgs.append(np.mean(TS[ni == n_inj]))
+        ns_med.append(np.percentile(ns[ni == n_inj], 50))
+        ns_low.append(np.percentile(ns[ni == n_inj], 84))
+        ns_high.append(np.percentile(ns[ni == n_inj], 16))
+        TS_med.append(np.percentile(TS[ni == n_inj], 50))
+        TS_low.append(np.percentile(TS[ni == n_inj], 84))
+        TS_high.append(np.percentile(TS[ni == n_inj], 16))
         
     plt.figure()
-    plt.plot(ni_vals, ns_avgs, marker="o", label="Data")
+    plt.plot(ni_vals, ns_med, label="Data")
+    plt.fill_between(ni_vals, ns_low, ns_high, color="blue", alpha=0.2)
     plt.plot(ni_vals, ni_vals, color="black", linestyle="dashed", label=r"$n_{\mathrm{signal}} = n_{\mathrm{injected}}$")
     plt.xlabel(r"$n_{\mathrm{injected}}$")
     plt.ylabel(r"$n_{\mathrm{signal}}$")
-    plt.title("Average Signal Recovery for (%s,%i) WIMPs"%(channel,mass))
+    plt.title("Median Signal Recovery for (%s,%i) WIMPs"%(channel,mass))
     plt.legend(loc="best")
     plt.tight_layout()
     plt.savefig(args.outfolder + "ns_" + channel + "_" + str(mass) + ".png")
     plt.close()
     
     plt.figure()
-    plt.plot(ni_vals, TS_avgs, marker="o")
+    plt.plot(ni_vals, TS_med)
+    plt.fill_between(ni_vals, TS_low, TS_high, color="blue", alpha=0.2)
     plt.xlabel(r"$n_{\mathrm{injected}}$")
     plt.ylabel("Test Statistic")
-    plt.title("Average Test Statistics for (%s,%i) WIMPs"%(channel,mass))
+    plt.title("Median Test Statistics for (%s,%i) WIMPs"%(channel,mass))
     plt.tight_layout()
     plt.savefig(args.outfolder + "TS_" + channel + "_" + str(mass) + ".png")
     plt.close()

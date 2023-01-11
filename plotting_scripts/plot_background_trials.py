@@ -7,7 +7,7 @@ import os, sys
 import glob
 
 parser = argparse.ArgumentParser()
-parser.add_argument("-t", "--trials", type=str, default="/mnt/home/priesbr1/DM_Search/data/trials_results/trials_bkg_360deg_Jmax/bkg_trials_*deg_J*.txt",
+parser.add_argument("-t", "--trials", type=str, default="/mnt/home/priesbr1/DM_Search/data/trials_results/trials_bkg_360deg_Jmax/bkg_trials_*_*.txt",
                     dest="trials", help="file(s) containing background trials to plot")
 parser.add_argument("-o", "--outfolder", type=str, default="/mnt/scratch/priesbr1/DM_Search/Plots/background_trials/TS_360deg_Jmax/",
                     dest="outfolder", help="folder to save output plots to")
