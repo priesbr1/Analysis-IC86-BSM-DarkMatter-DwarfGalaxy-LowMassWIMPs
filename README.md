@@ -38,6 +38,15 @@ Plotting scripts are located in the `plotting_scripts` directory:
 * `plot_spectra.py` - plots PPPC annihilation spectra
 * `plot_variables.py` - plots distributions of variables in DRAGON data
 
+Example job submission scripts (in SLURM format) are located in the `submission_scripts_SLURM` directory:
+* background_pdf_trials.sb
+* energy_range_optimization.sb
+* generate_background_pdfs.sb
+* generate_signal_pdfs.sb
+* i3_to_npy_exp.sb
+* i3_to_npy_MC.sb
+* signal_pdf_trials.sb
+
 ## Recommended Procedure
 
 ### MSU Cluster
@@ -60,7 +69,7 @@ Plotting scripts are located in the `plotting_scripts` directory:
 8. `python scripts/background_pdf_trials.py --background_pdfs "<name of npy file where background PDFs are stored from (6)>" --signal_pdfs "<name of npy file where signal PDFs are stored from (7)>" --sources "/mnt/home/priesbr1/DM_Search/data/analysis_sources_ra_dec_jfactors.txt" --channel "b" --mass 10 --num_trials 10 --seed 0 --outfolder "<name of output folder to store background trials results>"`  
   a. This should be run as a job array of 500 jobs (12 hours, 1 node, 2 cores, 5GB).  
   b. Instead of passing a single seed, you could pass the job array ID as the seed (similar to `energy_range_optimization.py`).  
-9. `python scripts/signal_pdf_trials.py --background_pdfs "<name of npy file where background PDFs are stored from (6)>" --signal_pdfs "<name of npy file where signal PDFs are stored from (7)>" --sources "/mnt/home/priesbr1/DM_Search/data/analysis_sources_ra_dec_jfactors.txt" --channel "b" --mass 10 --seed 0 --outfolder "<name of output folder to store signal trials results>"`  
+9. `python scripts/signal_pdf_trials.py --background_pdfs "<name of npy file where background PDFs are stored from (6)>" --signal_pdfs "<name of npy file where signal PDFs are stored from (7)>" --sources "/mnt/home/priesbr1/DM_Search/data/analysis_sources_ra_dec_jfactors.txt" --channel "b" --mass 10 --num_trials 1 --seed 0 --outfolder "<name of output folder to store signal trials results>"`  
   a. This should be run as a job array of 300 jobs (10 minutes, 20 GB).  
   b. Instead of passing a single seed, you could pass the job array ID as the seed (as in `background_pdf_trials.py`).  
 10. `python scripts/sensitivitiy_cross_section.py --spectra "<name of npy file where spectra are stored from (3)>" --mass 10 --channel "b" --sources "/mnt/home/priesbr1/DM_Search/analysis_sources_ra_dec_jfactors.txt" --background_trials "<name of output folder with background trials from (8)>" --signal_trials "<name of output folder with signal trials from (9)>" --repo_path "/mnt/research/IceCube/datasets/" --outfile "<name of output npy file to store cross sections>"`  
@@ -81,7 +90,7 @@ Plotting scripts are located in the `plotting_scripts` directory:
 6. `python scripts/background_pdf_trials.py --background_pdfs "<name of npy file where background PDFs are stored from (4)>" --signal_pdfs "<name of npy file where signal PDFs are stored from (5)>" --sources "/data/ana/BSM/IC86_LE_WIMP_dwarfgalaxy/analysis_sources_ra_dec_jfactors.txt" --channel "b" --mass 10 --num_trials 10 --seed 0 --outfolder "<name of output folder to store background trials results>"`  
   a. This should be run as a job array of 500 jobs (12 hours, 1 node, 2 cores, 5GB).  
   b. Instead of passing a single seed, you could pass the job array ID as the seed (similar to `energy_range_optimization.py`).  
-7. `python scripts/signal_pdf_trials.py --background_pdfs "<name of npy file where background PDFs are stored from (4)>" --signal_pdfs "<name of npy file where signal PDFs are stored from (5)>" --sources "/data/ana/BSM/IC86_LE_WIMP_dwarfgalaxy/analysis_sources_ra_dec_jfactors.txt" --channel "b" --mass 10 --seed 0 --outfolder "<name of output folder to store signal trials results>"`  
+7. `python scripts/signal_pdf_trials.py --background_pdfs "<name of npy file where background PDFs are stored from (4)>" --signal_pdfs "<name of npy file where signal PDFs are stored from (5)>" --sources "/data/ana/BSM/IC86_LE_WIMP_dwarfgalaxy/analysis_sources_ra_dec_jfactors.txt" --channel "b" --mass 10 --num_trials 1 --seed 0 --outfolder "<name of output folder to store signal trials results>"`  
   a. This should be run as a job array of 300 jobs (10 minutes, 20 GB).  
   b. Instead of passing a single seed, you could pass the job array ID as the seed (as in `background_pdf_trials.py`).  
 8. `python scripts/sensitivitiy_cross_section.py --spectra "<name of npy file where spectra are stored from (1)>" --mass 10 --channel "b" --sources "/data/ana/BSM/IC86_LE_WIMP_dwarfgalaxy/analysis_sources_ra_dec_jfactors.txt" --background_trials "<name of output folder with background trials from (6)>" --signal_trials "<name of output folder with signal trials from (7)>" --repo_path "data/ana/BSM/IC86_LE_WIMP_dwarfgalaxy/" --outfile "<name of output npy file to store cross sections>"`  
