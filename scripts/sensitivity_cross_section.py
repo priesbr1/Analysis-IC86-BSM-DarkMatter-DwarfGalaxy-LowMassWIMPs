@@ -31,6 +31,8 @@ parser.add_argument("-b", "--background_trials", type=str, default="/mnt/home/pr
                     dest="background_trials", help="folder containing results from background trials")
 parser.add_argument("-s", "--signal_trials", type=str, default="/mnt/home/priesbr1/DM_Search/data/trials_results/trials_sig_360deg_Jmax_distributed/",
                     dest="signal_trials", help="folder containing results from signal trials")
+parser.add_argument("-r", "--repo_path", type=str, default="/mnt/research/IceCube/datasets/",
+                    dest="repo_path", help="repository path for SkyLab dataset")
 parser.add_argument("-o", "--outfile", type=str, default="/mnt/home/priesbr1/DM_Search/data/cross_section_results/cross_section_results_360deg_Jmax_distributed_erange.npy",
                     dest="outfile", help="outfile to save results to")
 args = parser.parse_args()
@@ -86,7 +88,7 @@ multillh = MultiPointSourceLLH()
 baseline = 0.
 
 dragon = Datasets[sample]
-dragon.set_repository_path("/mnt/research/IceCube/datasets/")
+dragon.set_repository_path(args.repo_path)
 for season in seasons:
     exp, mc, livetime = dragon.season(season)
     sinDec_bins = dragon.sinDec_bins(season)

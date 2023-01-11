@@ -11,6 +11,8 @@ from matplotlib import colors
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 
 parser = argparse.ArgumentParser()
+parser.add_argument("-d", "--datafolder", type=str, default="/mnt/home/priesbr1/DM_Search/data/annihilation_spectra/",
+                    dest="datafolder", help="folder containing neutrino spectra")
 parser.add_argument("-o", "--oscillated", type=int, default=True,
                     dest="oscillated", help="whether or not neutrino spectra have already been oscillated")
 parser.add_argument("-p", "--output", type=str, default=None,
@@ -40,9 +42,9 @@ def oscillate_PPPC4(spectra, channels, masses, nu_types):
     return oscillated
 
 if (args.oscillated == False):
-    nu_e = np.load("/mnt/home/priesbr1/DM_Search/DM_CirelliSpectrum_dict_neutrinos_e.npy", allow_pickle=True)
-    nu_mu = np.load("/mnt/home/priesbr1/DM_Search/DM_CirelliSpectrum_dict_neutrinos_mu.npy", allow_pickle=True)
-    nu_tau = np.load("/mnt/home/priesbr1/DM_Search/DM_CirelliSpectrum_dict_neutrinos_tau.npy", allow_pickle=True)
+    nu_e = np.load(args.datafolder+"DM_CirelliSpectrum_dict_neutrinos_e.npy", allow_pickle=True)
+    nu_mu = np.load(args.datafolder+"DM_CirelliSpectrum_dict_neutrinos_mu.npy", allow_pickle=True)
+    nu_tau = np.load(args.datafolder+"DM_CirelliSpectrum_dict_neutrinos_tau.npy", allow_pickle=True)
     
     nu_e = nu_e.item()
     nu_mu = nu_mu.item()
@@ -76,12 +78,12 @@ if (args.oscillated == False):
                 else:
                     osc_nu_tot[channel][mass][var] = (osc_nu_e[channel][mass][var] + osc_nu_mu[channel][mass][var] + osc_nu_tau[channel][mass][var])/3
     
-    np.save("/mnt/home/priesbr1/DM_Search/DM_CirelliSpectrum_dict_neutrinos_all.npy", nu_tot)
-    np.save("/mnt/home/priesbr1/DM_Search/DM_CirelliSpectrum_dict_neutrinos_oscillated.npy", osc_nu_tot)
+    np.save(args.datafolder+"DM_CirelliSpectrum_dict_neutrinos_all.npy", nu_tot)
+    np.save(args.datafolder+"DM_CirelliSpectrum_dict_neutrinos_oscillated.npy", osc_nu_tot)
 
 else:
-    nu_tot = np.load("/mnt/home/priesbr1/DM_Search/DM_CirelliSpectrum_dict_neutrinos_all.npy", allow_pickle=True)
-    osc_nu_tot = np.load("/mnt/home/priesbr1/DM_Search/DM_CirelliSpectrum_dict_neutrinos_oscillated.npy", allow_pickle=True)
+    nu_tot = np.load(args.datafolder+"DM_CirelliSpectrum_dict_neutrinos_all.npy", allow_pickle=True)
+    osc_nu_tot = np.load(args.datafolder+"DM_CirelliSpectrum_dict_neutrinos_oscillated.npy", allow_pickle=True)
     
     nu_tot = nu_tot.item()
     osc_nu_tot = osc_nu_tot.item()

@@ -32,7 +32,7 @@ if (args.background == True):
                 plt.xlabel(r"Angle from source [$\mathrm{rad}$]")
                 plt.ylabel("Probability Density")
                 plt.title("%s Background PDF for (%s,%i) WIMPs"%(source, channel, mass))
-                plt.savefig(args.output + "background_pdf_" + source + "_" + channel + "_" + str(mass) + "_" + band_size  + ".png")
+                plt.savefig(args.output + "background_pdf_" + source + "_" + channel + "_" + str(mass) + "_" + band_size + ".png")
                 plt.close()
         
         print("Finished plotting background PDFs for %s"%source)
