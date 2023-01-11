@@ -46,7 +46,7 @@ Plotting scripts are located in the `plotting_scripts` directory:
   b. This should be run separately for each year (2011-2017), changing the `--files` argument for each.  
 2. `python scripts/i3_to_npy.py --files "Level5p_IC862013_genie_numu.014674.??????.i3.bz2" --inpath "/mnt/research/IceCube/jpandre/Matt/Level5p/numu/14674/" --outpath "<name of output folder for npy DRAGON data>" --MC 1`  
   a. This only needs to be run if the DRAGON data is not already in `npy` format.  
-  b. This only processes MC data from 2013. This is taken to be the same MC data for all years (2011-2017).  
+  b. This only processes MC data from 2013. This is taken to be the same MC data for all years (2011-2017). If not, it will need to be manually copied into filenames with different years corresponding to those from the previous step.  
 3. `python scripts/DM_neutrino_oscillations.py --datafolder "/mnt/home/priesbr1/DM_Search/data/annihilation_spectra/" --oscillated 0 --output "<name of output folder for plots>" --flux_units 0`  
 4. `python scripts/energy_range_optimization.py --datafolder "/mnt/research/IceCube/jpandre/Matt/level5p/" --spectra "<name of npy file where spectra are stored from (3)>" --channel "b" --mass 10 --part 0 --outfolder "<name of output folder for text files>"`  
   a. This should be run as a job array of 10 jobs (10 hours, 20GB).  
