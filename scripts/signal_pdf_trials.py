@@ -22,6 +22,8 @@ parser.add_argument("-c", "--channel", type=str, default="b",
                     dest="channel", help="annhiliation channel to run background trials for")
 parser.add_argument("-m", "--mass", type=int, default=10,
                     dest="mass", help="WIMP mass to rub background trials for")
+parser.add_argument("-n", "--num_trials", type=int, default=1,
+                    dest="num_trials", help="number of signal trials to run per core")
 parser.add_argument("-d", "--seed", type=int, default=None,
                     dest="seed", help="RNG seed for reproducibility")
 parser.add_argument("-o", "--outfolder", type=str, default="/mnt/home/priesbr1/DM_Search/data/trials_results/trials_sig_360deg_Jmax_distributed/",
@@ -103,7 +105,6 @@ for i, source in enumerate(names):
 
 #in_events = np.concatenate((np.arange(1,10,1,dtype=int), np.linspace(10,50,20,dtype=int)))
 in_events = np.concatenate((np.arange(1,10,1,dtype=int), np.linspace(10,30,20,dtype=int,endpoint=False), np.arange(30,300+30/2,30,dtype=int)))
-num_sig_trials = 1
 
 t1 = time.time()
 
@@ -111,7 +112,7 @@ for ni in in_events:
     rec = []
     ts_rec = []
     
-    for x in range(num_sig_trials):
+    for x in range(args.num_trials):
         t1_trial = time.time()
         bfs = []
         tss = []
