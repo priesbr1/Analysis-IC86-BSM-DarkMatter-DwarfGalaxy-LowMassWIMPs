@@ -15,7 +15,7 @@ def calculate_angle(dec_source, ra_source, dec_nu, ra_nu):
     return np.arccos(np.cos(dec_source)*np.cos(dec_nu)*np.cos(ra_source - ra_nu) + np.sin(dec_source)*np.sin(dec_nu))
 
 parser = argparse.ArgumentParser()
-parser.add_argument("-b", "--bkg_pdfs", type=str, default="/mnt/home/priesbr1/DM_Search/data/pdfs/DRAGON_background_pdfs_5deg.npy",
+parser.add_argument("-b", "--bkg_pdfs", type=str, default="/mnt/home/priesbr1/DM_Search/data/pdfs/DRAGON_background_pdfs_360deg.npy",
                     dest="bkg_pdfs", help="file containing background PDFs for each mass, channel, and source")
 parser.add_argument("-p", "--sig_pdfs", type=str, default="/mnt/home/priesbr1/DM_Search/data/pdfs/DRAGON_signal_pdfs.npy",
                     dest="sig_pdfs", help="file containing signal PDFs for each mass and channel")
@@ -25,8 +25,12 @@ parser.add_argument("-c", "--channel", type=str, default="b",
                     dest="channel", help="annhiliation channel to run background trials for")
 parser.add_argument("-m", "--mass", type=int, default=10,
                     dest="mass", help="WIMP mass to rub background trials for")
+parser.add_argument("-e", "--num_events", type=int, default=1000,
+                    dest="num_events", help="number of background events to sample per source")
 parser.add_argument("-n", "--num_trials", type=int, default=10,
                     dest="num_trials", help="number of background trials to run per core")
+parser.add_argument("-x", "--max_trials", type=int, default=10000,
+                    dest="max_trials", help="maximum number of trials per set")
 parser.add_argument("-d", "--seed", type=int, default=None,
                     dest="seed", help="RNG seed for reproducibility")
 parser.add_argument("-o", "--outfolder", type=str, default="/mnt/home/priesbr1/DM_Search/data/trials_results/DRAGON_background_trials/",
@@ -60,7 +64,7 @@ J_factors = 10**J_factors
 
 outfile = "bkg_trials_" + args.channel + "_" + str(args.mass) + ".txt"
 
-def run_bkg_trials(bkg_pdfs, sig_pdfs, names, J_factors, args, outfile, num_bkg_trials):
+def run_bkg_trials(bkg_pdfs, sig_pdfs, names, J_factors, args, outfile, num_bkg_trials, max_trials):
     t1 = time.time()
     
     for t in range(num_bkg_trials):
@@ -68,7 +72,7 @@ def run_bkg_trials(bkg_pdfs, sig_pdfs, names, J_factors, args, outfile, num_bkg_
         data = []
         for source in names:
             counts, bins = bkg_pdfs[source][args.channel][args.mass]["Counts"], bkg_pdfs[source][args.channel][args.mass]["Bins"]
-            data.append(generate_rand_from_pdf(counts,bins[:-1],1000))
+            data.append(generate_rand_from_pdf(counts,bins[:-1],args.num_events))
         
         # Fit
         N = int(np.sum([len(samp) for samp in data])/len(names))
@@ -117,11 +121,16 @@ def run_bkg_trials(bkg_pdfs, sig_pdfs, names, J_factors, args, outfile, num_bkg_
             else:
                 try:
                     os.rename(args.outfolder+outfile,args.outfolder+outfile)
-                    f = open(args.outfolder+outfile,"a")
-                    for j, source in enumerate(names):
-                        f.write("%s \t %s \t "%(bfs[j], tss[j]))
-                    f.write("%s \t %s \n"%(bf,ts))
-                    f.close()
+                    num_complete = sum(1 for line in open(args.outfolder+outfile)) - 1
+                    if (num_complete < max_trials):
+                        f = open(args.outfolder+outfile,"a")
+                        for j, source in enumerate(names):
+                            f.write("%s \t %s \t "%(bfs[j], tss[j]))
+                        f.write("%s \t %s \n"%(bf,ts))
+                        f.close()
+                    else:
+                        print("Desired number of trials reached")
+                        return
                     written = True
                 except:
                     print("Waiting for file access...")
@@ -130,8 +139,8 @@ def run_bkg_trials(bkg_pdfs, sig_pdfs, names, J_factors, args, outfile, num_bkg_
     t2 = time.time()
     print("Time: %.2f sec"%(t2-t1))
 
-p1 = Process(target=run_bkg_trials, args=(bkg_pdfs, sig_pdfs, names, J_factors, args, outfile, args.num_trials,))
-p2 = Process(target=run_bkg_trials, args=(bkg_pdfs, sig_pdfs, names, J_factors, args, outfile, args.num_trials,))
+p1 = Process(target=run_bkg_trials, args=(bkg_pdfs, sig_pdfs, names, J_factors, args, outfile, args.num_trials, args.max_trials,))
+p2 = Process(target=run_bkg_trials, args=(bkg_pdfs, sig_pdfs, names, J_factors, args, outfile, args.num_trials, args.max_trials,))
 p1.start()
 p2.start()
 p1.join()
