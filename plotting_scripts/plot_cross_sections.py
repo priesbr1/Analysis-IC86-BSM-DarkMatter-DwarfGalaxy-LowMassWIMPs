@@ -38,7 +38,7 @@ for channel in cross_sections.keys():
 ax.semilogx()
 ax.semilogy()
 ax.set_xlabel(r"$m_{WIMP}$ [GeV/c$^{2}$]", fontsize=12)
-ax.set_ylabel(r"$\langle \sigma v \rangle$ [cm$^{3}$ s$^{-1}$]", fontsize=12)
+ax.set_ylabel(r"$\langle \sigma v \rangle$ Sensitivity [cm$^{3}$ s$^{-1}$]", fontsize=12)
 ax.legend(loc="best", ncol=2, prop={"size":12}, labelspacing=0.5)
 ax.grid(color="grey", linestyle="-", linewidth=0.5, alpha=0.5)
 plt.tight_layout()
@@ -50,15 +50,15 @@ comp_files = sorted(glob.glob(args.comparison+"*.csv"))
 for cf in comp_files:
     print("Using comparison", cf)
     channel_result = cf[cf.rfind("/")+1:cf.rfind(".")]
-    channel, detector, year = channel_result.split("_")
+    channel, detector, year, location = channel_result.split("_")
     channel = channel[len(channel)//2:]
     
     comp_results = np.genfromtxt(cf, delimiter=",", dtype=None)
-    if detector+"_"+year not in comps.keys():
-        comps[detector+"_"+year] = dict()
-    comps[detector+"_"+year][channel] = dict()
-    comps[detector+"_"+year][channel]["m_WIMP"] = np.array([comp_results[i][0] for i in range(len(comp_results))])
-    comps[detector+"_"+year][channel]["sigma_v"] = np.array([comp_results[i][1] for i in range(len(comp_results))])
+    if detector+"_"+year+"_"+location not in comps.keys():
+        comps[detector+"_"+year+"_"+location] = dict()
+    comps[detector+"_"+year+"_"+location][channel] = dict()
+    comps[detector+"_"+year+"_"+location][channel]["m_WIMP"] = np.array([comp_results[i][0] for i in range(len(comp_results))])
+    comps[detector+"_"+year+"_"+location][channel]["sigma_v"] = np.array([comp_results[i][1] for i in range(len(comp_results))])
 
 comp_linestyles = ["--", ":", "-."]
 if len(comps.keys()) > len(comp_linestyles):
@@ -86,11 +86,11 @@ for channel in cross_sections.keys():
         sigma_v.append(cross_sections[channel][mass])
     
     ax.plot(m_WIMP, sigma_v, color=colors[channel], linestyle="-", linewidth=2)
-ax.plot([], [], color="black", linestyle="-", label="Current Results", linewidth=2)
+ax.plot([], [], color="black", linestyle="-", label="Current Sensitivities (DG)", linewidth=2)
 
 for i, result in enumerate(comps.keys()):
-    detector, year = result.split("_")
-    ax.plot([], [], color="black", linestyle=comp_linestyles[i], label=detector+" "+year, linewidth=2)
+    detector, year, location = result.split("_")
+    ax.plot([], [], color="black", linestyle=comp_linestyles[i], label=detector+" "+year+" ("+location+")", linewidth=2)
     for channel in comps[result].keys():
         ax.plot(comps[result][channel]["m_WIMP"], comps[result][channel]["sigma_v"], color=colors[channel], linestyle=comp_linestyles[i], linewidth=2)
 
