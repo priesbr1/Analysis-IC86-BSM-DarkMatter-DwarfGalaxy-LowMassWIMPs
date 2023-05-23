@@ -14,9 +14,9 @@
 source activate tfgpu-brandon
 
 cd /mnt/home/priesbr1/DM_Search/
-echo "python background_pdf_trials.py --bkg_pdfs '/mnt/home/priesbr1/DM_Search/data/pdfs/DRAGON_background_pdfs_360deg.npy' --sig_pdfs '/mnt/home/priesbr1/DM_Search/data/pdfs/DRAGON_signal_pdfs.npy' --sources '/mnt/home/priesbr1/DM_Search/data/analysis_sources_ra_dec_jfactors.txt' --channel 'b' --mass 10 --num_trials 10 --outfolder '/mnt/home/priesbr1/DM_Search/data/trials_results/trials_bkg_360deg_Jmax/'"
+echo "python background_pdf_trials.py --bkg_pdfs '/mnt/home/priesbr1/DM_Search/data/pdfs/DRAGON_background_pdfs_360deg.npy' --sig_pdfs '/mnt/home/priesbr1/DM_Search/data/pdfs/DRAGON_signal_pdfs.npy' --sources '/mnt/home/priesbr1/DM_Search/data/analysis_sources_ra_dec_jfactors.txt' --channel 'b' --num_events 1000 --mass 10 --num_trials 10 --max_trials 100000 --outfolder '/mnt/home/priesbr1/DM_Search/data/trials_results/trials_bkg_360deg_Jmax/'"
 
-python background_pdf_trials.py --bkg_pdfs '/mnt/home/priesbr1/DM_Search/data/pdfs/DRAGON_background_pdfs_360deg.npy' --sig_pdfs '/mnt/home/priesbr1/DM_Search/data/pdfs/DRAGON_signal_pdfs.npy' --sources '/mnt/home/priesbr1/DM_Search/data/analysis_sources_ra_dec_jfactors.txt' --channel 'b' --mass 10 --num_trials 10 --outfolder '/mnt/home/priesbr1/DM_Search/data/trials_results/trials_bkg_360deg_Jmax/'
+python background_pdf_trials.py --bkg_pdfs '/mnt/home/priesbr1/DM_Search/data/pdfs/DRAGON_background_pdfs_360deg.npy' --sig_pdfs '/mnt/home/priesbr1/DM_Search/data/pdfs/DRAGON_signal_pdfs.npy' --sources '/mnt/home/priesbr1/DM_Search/data/analysis_sources_ra_dec_jfactors.txt' --channel 'b' --mass 10 --num_events 1000 --num_trials 10 --max_trials 100000 --outfolder '/mnt/home/priesbr1/DM_Search/data/trials_results/trials_bkg_360deg_Jmax/'
 
 exit $?
 
