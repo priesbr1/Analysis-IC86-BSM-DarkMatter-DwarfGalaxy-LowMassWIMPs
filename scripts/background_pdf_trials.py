@@ -80,20 +80,19 @@ def run_bkg_trials(bkg_pdfs, sig_pdfs, names, J_factors, args, outfile, num_bkg_
         
         for j, source in enumerate(names):
             source_llh = []
-            for i in range(N):
-                ll = 0
-                i = float(i)
-                for n in data[j]:
-                    bkg_bin = np.max(np.where((bkg_pdfs[source][args.channel][args.mass]["Bins"] <= n) == True)) # Find left edge of bin
-                    bkg_prob = bkg_pdfs[source][args.channel][args.mass]["Counts"][bkg_bin] # Get probability of being in that bin
-                    bkg_prob /= np.sum(bkg_pdfs[source][args.channel][args.mass]["Counts"]) # Normalize
-                    sig_bin = np.max(np.where((sig_pdfs[args.channel][args.mass]["Bins"] <= n) == True))
-                    sig_prob = sig_pdfs[args.channel][args.mass]["Counts"][sig_bin]
-                    sig_prob /= np.sum(sig_pdfs[args.channel][args.mass]["Counts"])
-                    comb = (i/N)*sig_prob + (1-(i/N))*bkg_prob
-                    ll += np.log(comb)
-                
-                source_llh.append(-ll)
+            
+            bkg_bins = np.searchsorted(bkg_pdfs[source][args.channel][args.mass]["Bins"], data[j], "right")-1 # Find left edges of bins
+            bkg_probs = np.array(bkg_pdfs[source][args.channel][args.mass]["Counts"][bkg_bins], dtype=float) # Get probabilities for bins
+            bkg_probs /= np.sum(bkg_pdfs[source][args.channel][args.mass]["Counts"]) # Normalize probabilities
+            sig_bins = np.searchsorted(sig_pdfs[args.channel][args.mass]["Bins"], data[j], "right")-1
+            sig_probs = np.array(sig_pdfs[args.channel][args.mass]["Counts"][sig_bins], dtype=float)
+            sig_probs /= np.sum(sig_pdfs[args.channel][args.mass]["Counts"])
+            
+            for ns in range(N):
+                ns = float(ns)
+                combs = (ns/N)*sig_probs + (1-(ns/N))*bkg_probs
+                source_llh.append(-1*np.sum(np.log(combs)))
+            
             llhs.append(source_llh)
         
         bfs = np.argmin(llhs, axis=1)
