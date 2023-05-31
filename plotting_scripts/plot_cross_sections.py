@@ -18,8 +18,8 @@ args = parser.parse_args()
 cross_sections = np.load(args.filename, allow_pickle=True)
 cross_sections = cross_sections.item()
 
-legends = {"b":r"$b\bar{b}$", "Mu":r"$\mu^+\mu^-$", "Tau":r"$\tau^+\tau^-$", "W":r"$W^+W^-$", "Nu":r"$\nu\bar{\nu}$", "Nue":r"$\nu_e\bar{\nu_e}$", "NuMu":r"$\nu_{\mu}\bar{\nu_{\mu}}$",
-           "NuTau":r"$\nu_{\tau}\bar{\nu_{\tau}}$"}
+legends = {"b":r"$b\bar{b}$", "Mu":r"$\mu^+\mu^-$", "Tau":r"$\tau^+\tau^-$", "W":r"$W^+W^-$", "Nu":r"$\nu\bar{\nu}$", "Nue":r"$\nu_e\bar{\nu}_e$", "NuMu":r"$\nu_{\mu}\bar{\nu}_{\mu}$",
+           "NuTau":r"$\nu_{\tau}\bar{\nu}_{\tau}$"}
 colors = {"b":"mediumturquoise", "Mu":"forestgreen", "Tau":"dodgerblue", "W":"darkmagenta", "Nu":"mediumvioletred", "Nue":"darkorchid", "NuMu":"orchid", "NuTau":"lightpink"}
 
 fig = plt.figure()
