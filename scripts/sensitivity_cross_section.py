@@ -27,6 +27,8 @@ parser.add_argument("-c", "--channel", type=str, default="b",
                     dest="channel", help="annihilation channel to use")
 parser.add_argument("-u", "--sources", type=str, default="/mnt/home/priesbr1/DM_Search/data/analysis_sources_ra_dec_jfactors.txt",
                     dest="sources", help="file containing RA, dec, and J-factor information for each source")
+parser.add_argument("-j", "--J_type", type=str, choices=["0.1","0.2","0.5","10","min","max"], default="max",
+                    dest="J_type", help="J-factor values to use based on opening half-angle")
 parser.add_argument("-b", "--background_trials", type=str, default="/mnt/home/priesbr1/DM_Search/data/trials_results/trials_bkg_360deg_Jmax/",
                     dest="background_trials", help="folder containing results from background trials")
 parser.add_argument("-s", "--signal_trials", type=str, default="/mnt/home/priesbr1/DM_Search/data/trials_results/trials_sig_360deg_Jmax_distributed/",
@@ -41,24 +43,35 @@ args = parser.parse_args()
 sample = 'PointSourceDRAGON_v001p00'  # PointSourceTracks_v00?p0?, GFU, PointSourceDRAGON_v001p00, etc.
 seasons = ['IC86, 2011', 'IC86, 2012', 'IC86, 2013', 'IC86, 2014', 'IC86, 2015', 'IC86, 2016', 'IC86, 2017']  # years
 
+def extract_source_info(sources, J_type, J_indices_map):
+    names = []
+    ra = np.array([])
+    dec = np.array([])
+    half_angles = []
+    J_factors = np.array([])
+
+    J_indices = J_indices_map[J_type]
+
+    for i in range(len(sources)):
+        for idx in J_indices:
+            if not np.isnan(sources[i][idx]):
+                names.append(sources[i][0])
+                ra = np.append(ra, sources[i][1]*np.pi/180.)
+                dec = np.append(dec, sources[i][2]*np.pi/180.)
+                half_angles.append(float(list(J_indices_map.keys())[list(J_indices_map.values()).index([idx])]))
+                J_factors = np.append(J_factors, sources[i][idx])
+                break
+
+    J_factors = 10**J_factors
+
+    return names, ra, dec, half_angles, J_factors
+
+J_indices_map = {"0.1": [6], "0.2": [9], "0.5": [12], "10": [15], "min": [6,9,12,15], "max": [15,12,9,6]}
+
 # Source location and information
 # Source encoding - 0:name; 1:RA; 2:Dec; 3,4,5:r_h; 6,7,8:J0.1; 9,10,11:J0.2; 12,13,14:J0.5; 15,16,17:J10
 sources = np.genfromtxt(args.sources, delimiter=",", dtype=("U20",float,float,float,float,float,float,float,float,float,float,float,float,float,float,float,float,float))
-names = []
-ra  = np.array([])
-dec = np.array([])
-J_factors = np.array([])
-half_angles = []
-for i in range(len(sources)):
-    for idx in [15,12,9,6]:
-        if not np.isnan(sources[i][idx]):
-            names.append(sources[i][0])
-            ra = np.append(ra, sources[i][1]*np.pi/180.)
-            dec = np.append(dec, sources[i][2]*np.pi/180.)
-            J_factors = np.append(J_factors, sources[i][idx])
-            half_angles.append([10,0.5,0.2,0.1][[15,12,9,6].index(idx)])
-            break
-J_factors = 10**J_factors
+names, ra, dec, half_angles, J_factors = extract_source_info(sources, args.J_type, J_indices_map)
 J_factor_sum = np.sum(J_factors)
 
 max_name_length = np.max([len(name) for name in names])
