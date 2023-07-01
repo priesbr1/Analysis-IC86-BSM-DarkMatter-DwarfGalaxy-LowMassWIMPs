@@ -40,6 +40,17 @@ for trial_set in bkg_trials:
     print("Median TS for %i (%s,%i) background trials: %.8f"%(len(TS), channel, mass, np.median(TS)))
     
     plt.figure()
+    plt.hist(ns, bins=30)
+    #plt.xscale("symlog", linthresh=1)
+    plt.yscale("log")
+    plt.xlabel(r"$n_{s}$")
+    plt.ylabel("Counts")
+    plt.title("Background Signal Recovery for (%s,%i) WIMPs"%(channel,mass))
+    plt.tight_layout()
+    plt.savefig(args.outfolder + "ns_" + channel + "_" + str(mass) + ".png")
+    plt.close()
+    
+    plt.figure()
     plt.hist(TS, bins=30)
     #plt.xscale("symlog", linthresh=10**(-4))
     plt.yscale("log")
