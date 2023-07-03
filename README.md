@@ -21,6 +21,7 @@ Analysis scripts are located in the `scripts` directory:
 * `DM_FluxComputation.py` - contains functions for neutrino oscillations
 * `DM_neutrino_oscillations.py` - applies neutrino oscillations to (and plots) PPPC annihilation spectra
 * `energy_range_optimization.py` - calculates optimal energy ranges based on PPPC annihilaiton spectra
+* `estimate_background_events.py` - estimates number of background events in sample for each source
 * `event_cuts_l5.py` - includes cuts applied to data sample for energy range optimization
 * `generate_background_pdfs.py` - generates background PDFs from DRAGON exp data
 * `generate_signal_pdfs.py` - generates background PDFs from DRAGON MC data and source locations
@@ -31,8 +32,9 @@ Analysis scripts are located in the `scripts` directory:
 Plotting scripts are located in the `plotting_scripts` directory:
 * `plot_background_trials.py` - plots TS distributions from background trials
 * `plot_cross_sections.py` - plots expected upper limits of annihilation cross sections
+* `plot_cross_sections_channels.py` - plots expected upper limits of annihilation cross sections separately for each channel (used for large comparisons)
 * `plot_energy_ranges.py` - plots signal-tobackground ratio in energy range phase space
-* `plot_PDFs.py` - plots signal and background PDFs
+* `plot_pdfs.py` - plots signal and background PDFs
 * `plot_signal_trials.py` - plots TS averages and signal recovery from signal trials
 * `plot_source_info.py` - plots information on dwarf galaxy sources (skymap of locations, J-factors, angular sizes)
 * `plot_spectra.py` - plots PPPC annihilation spectra
@@ -40,12 +42,22 @@ Plotting scripts are located in the `plotting_scripts` directory:
 
 Example job submission scripts (in SLURM format) are located in the `submission_scripts_SLURM` directory:
 * `background_pdf_trials.sb`
+* `background_pdf_trials_scavenger.sb`
 * `energy_range_optimization.sb`
 * `generate_background_pdfs.sb`
 * `generate_signal_pdfs.sb`
 * `i3_to_npy_exp.sb`
 * `i3_to_npy_MC.sb`
 * `signal_pdf_trials.sb`
+
+Example job submission scripts (in Condor format) are located in the `submission_scripts_Condor` directory:
+* `background_pdf_trials_submit_npx3.py`
+* `energy_range_optimization_submit_npx3.py`
+* `generate_background_pdfs_submit_npx3.py`
+* `generate_signal_pdfs_submit_npx3.py`
+* `signal_pdf_trials_submit_npx3.py`
+* `submit_npx3_10GB_1CPU.sh`
+* `submit_npx3_10GB_2CPU.sh`
 
 ## Recommended Procedure
 
