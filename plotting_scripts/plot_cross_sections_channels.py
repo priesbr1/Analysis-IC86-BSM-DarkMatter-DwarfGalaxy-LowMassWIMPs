@@ -21,6 +21,8 @@ supported_channels = ["b", "Mu", "Tau", "W", "Nu", "Nue", "NuMu", "NuTau"]
 if args.channel not in supported_channels:
     raise ValueError("Channel (%s) not supported"%args.channel)
 
+params = args.filename[args.filename.rfind("/")+len("cross_section_results")+2:args.filename.rfind(".")]
+
 cross_sections = np.load(args.filename, allow_pickle=True)
 cross_sections = cross_sections.item()
 
@@ -82,5 +84,5 @@ ax.set_ylabel(r"$\langle \sigma v \rangle$ [cm$^{3}$ s$^{-1}$]", fontsize=12)
 ax.legend(bbox_to_anchor=(1.04,0.5), loc="center left", prop={"size":12}, labelspacing=0.5)
 ax.grid(color="grey", linestyle="-", linewidth=0.5, alpha=0.5)
 plt.tight_layout()
-plt.savefig(args.output + "cross_section_results_comparison_%s_360deg_Jmax_distributed_erange.png"%args.channel)
+plt.savefig(args.output + "cross_section_results_comparison_%s_"%args.channel + params + ".png")
 print("Finished comparison plot")

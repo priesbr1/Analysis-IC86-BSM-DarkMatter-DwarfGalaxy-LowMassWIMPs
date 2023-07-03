@@ -15,6 +15,8 @@ parser.add_argument("-o", "--output", type=str, default="/mnt/scratch/priesbr1/D
                     dest="output", help="output folder for plots")
 args = parser.parse_args()
 
+params = args.filename[args.filename.rfind("/")+len("cross_section_results")+2:args.filename.rfind(".")]
+
 cross_sections = np.load(args.filename, allow_pickle=True)
 cross_sections = cross_sections.item()
 
@@ -42,7 +44,7 @@ ax.set_ylabel(r"$\langle \sigma v \rangle$ Sensitivity [cm$^{3}$ s$^{-1}$]", fon
 ax.legend(loc="best", ncol=2, prop={"size":12}, labelspacing=0.5)
 ax.grid(color="grey", linestyle="-", linewidth=0.5, alpha=0.5)
 plt.tight_layout()
-plt.savefig(args.output + "cross_section_results_360deg_Jmax_distributed_background_erange.png")
+plt.savefig(args.output + "cross_section_results_" + params + ".png")
 print("Finished solo plot")
 
 comps = dict()
@@ -101,5 +103,5 @@ ax.set_ylabel(r"$\langle \sigma v \rangle$ [cm$^{3}$ s$^{-1}$]", fontsize=12)
 ax.legend(bbox_to_anchor=(1.04,0.5), loc="center left", prop={"size":12}, labelspacing=0.5)
 ax.grid(color="grey", linestyle="-", linewidth=0.5, alpha=0.5)
 plt.tight_layout()
-plt.savefig(args.output + "cross_section_results_comparison_360deg_Jmax_distributed_background_erange.png")
+plt.savefig(args.output + "cross_section_results_comparison_" + params + ".png")
 print("Finished comparison plot")
