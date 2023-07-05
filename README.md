@@ -93,20 +93,22 @@ Example job submission scripts (in Condor format) are located in the `submission
 
 ### Madison Cluster
 1. `python scripts/DM_neutrino_oscillations.py --datafolder "/data/ana/BSM/IC86_LE_WIMP_dwarfgalaxy/annihilation_spectra/" --oscillated 0 --output "<name of output folder for plots>" --flux_units 0`  
+  a. If only plotting is necessary, pass `--oscillated 1`.   
 2. `python scripts/energy_range_optimization.py --datafolder "/data/ana/BSM/IC86_LE_WIMP_dwarfgalaxy/energy_optimization_MC/" --spectra "<name of npy file where spectra are stored from (1)>" --channel "b" --mass 10 --part 0 --outfolder "<name of output folder for text files>"`  
-  a. This should be run as a job array of 10 jobs (10 hours, 20GB); see `submission_scripts_SLURM/energy_range_optimization.sb` for details.  
-  b. The `part` argument should be passed as the job array ID (one of 0-9).  
-3. `python plotting_scripts/plot_energy_ranges.py --datafolder "<name of output folder from (1)>" --channel "b" -mass 10 --outfolder "<name of output folder for plots">`  
+  a. This should be run as a job array of 10 jobs (10 hours, 20GB); see `submission_scripts_Condor/energy_range_optimization_submit_npx3.sb` for details.  
+3. `python plotting_scripts/plot_energy_ranges.py --datafolder "<name of output folder from (2)>" --channel "b" --masses <list of masses to plot separated by spaces (e.g., 10 20 30)> --outfolder "<name of output folder for plots">`  
 4. `python scripts/generate_background_pdfs.py --data "/data/ana/BSM/IC86_LE_WIMP_dwarfgalaxy/ps_DRAGON/version-001-p00/IC86_201?_exp.npy" --sources "/data/ana/BSM/IC86_LE_WIMP_dwarfgalaxy/analysis_sources_ra_dec_jfactors.txt" --channel "b" --mass 10 --band_size 360 --seed 0 --output "<name of output npy file to store background PDFs>"`  
-  a. This should be run as a job (12 hours, 20GB); see `submission_scripts_SLURM/generate_background_pdfs.sb` for details.  
+  a. This should be run as a job (12 hours, 20GB); see `submission_scripts_Condor/generate_background_pdfs_submit_npx3.py` for details.  
   b. `--band_size 360` will generate an all-sky PDF.  
+  c. If no RNG seed is desired, do not pass an argument for `--seed`.   
 5. `python scripts/generate_signal_pdfs.py --data "/data/ana/BSM/IC86_LE_WIMP_dwarfgalaxy/ps_DRAGON/version-001-p00/IC86_201?_MC.npy" --spectra "<name of npy file where spectra are stored from (1)>" --channel "b" --output "<name of output npy file to store signal PDFs>"`  
-  a. This should be run as a job (12 hours, 20GB); see `submission_scripts_SLURM/generate_signal_pdfs.sb` for details.  
-6. `python scripts/background_pdf_trials.py --background_pdfs "<name of npy file where background PDFs are stored from (4)>" --signal_pdfs "<name of npy file where signal PDFs are stored from (5)>" --sources "/data/ana/BSM/IC86_LE_WIMP_dwarfgalaxy/analysis_sources_ra_dec_jfactors.txt" --channel "b" --mass 10 --num_trials 10 --seed 0 --outfolder "<name of output folder to store background trials results>"`  
-  a. This should be run as a job array of 500 jobs (12 hours, 1 node, 2 cores, 5GB); see `submission_scripts_SLURM/background_pdf_trials.sb` for details.  
-  b. Instead of passing a single seed, you could pass the job array ID as the seed (similar to `energy_range_optimization.py`).  
-7. `python scripts/signal_pdf_trials.py --background_pdfs "<name of npy file where background PDFs are stored from (4)>" --signal_pdfs "<name of npy file where signal PDFs are stored from (5)>" --sources "/data/ana/BSM/IC86_LE_WIMP_dwarfgalaxy/analysis_sources_ra_dec_jfactors.txt" --channel "b" --mass 10 --num_trials 1 --seed 0 --outfolder "<name of output folder to store signal trials results>"`  
-  a. This should be run as a job array of 300 jobs (10 minutes, 20 GB); see `submission_scripts_SLURM/signal_pdf_trials.sb` for details.  
+  a. This should be run as a job (12 hours, 20GB); see `submission_scripts_Condor/generate_signal_pdfs_submit_npx3.py` for details.  
+6. `python scripts/background_pdf_trials.py --background_pdfs "<name of npy file where background PDFs are stored from (4)>" --signal_pdfs "<name of npy file where signal PDFs are stored from (5)>" --sources "/data/ana/BSM/IC86_LE_WIMP_dwarfgalaxy/analysis_sources_ra_dec_jfactors.txt" --J_type "max" --channel "b" --mass 10 --num_events 100000 --num_trials 10 --max_trials 10000 --seed 0 --outfolder "<name of output folder to store background trials results>"`  
+  a. This should be run as a job array of 500 jobs (12 hours, 1 node, 2 cores, 5GB); see `submission_scripts_Condor/background_pdf_trials_submit_npx3.py` for details.  
+  b. The `--J_type` argument refers to what set of J-factors should be used based on the opening half-angles.
+  c. Instead of passing a single seed, you could pass the job array ID as the seed (similar to `energy_range_optimization.py`).  
+7. `python scripts/signal_pdf_trials.py --background_pdfs "<name of npy file where background PDFs are stored from (4)>" --signal_pdfs "<name of npy file where signal PDFs are stored from (5)>" --sources "/data/ana/BSM/IC86_LE_WIMP_dwarfgalaxy/analysis_sources_ra_dec_jfactors.txt" --J_type "max" --channel "b" --mass 10 --num_bkg_events 100000 --num_trials 2 --seed 0 --outfolder "<name of output folder to store signal trials results>"`  
+  a. This should be run as a job array of 500 jobs (12 hours, 20 GB); see `submission_scripts_Condor/signal_pdf_trials_submit_npx3.py` for details.  
   b. Instead of passing a single seed, you could pass the job array ID as the seed (as in `background_pdf_trials.py`).  
 8. `python scripts/sensitivitiy_cross_section.py --spectra "<name of npy file where spectra are stored from (1)>" --mass 10 --channel "b" --sources "/data/ana/BSM/IC86_LE_WIMP_dwarfgalaxy/analysis_sources_ra_dec_jfactors.txt" --background_trials "<name of output folder with background trials from (6)>" --signal_trials "<name of output folder with signal trials from (7)>" --repo_path "data/ana/BSM/IC86_LE_WIMP_dwarfgalaxy/" --outfile "<name of output npy file to store cross sections>"`  
   a. This ***must*** be run from the main `skylab` directory, wherever this has been cloned. Please make sure to update any paths above accordingly.  
