@@ -116,7 +116,8 @@ Example job submission scripts (in Condor format) are located in the `submission
 
 ## Notes
 * All scripts support argument parsing through python's `argparse` package for increased modularity.
+  * This includes the `submit_npx3` scripts in `submission_scripts_Condor/`, which is how arguments are passed to the job files.
 * Longer-running scripts (e.g., `background_pdf_trials.py`, `energy_range_optimization.py`, `generate_background_pdfs.py`, `generate_signal_pdfs.py`, `i3_to_npy.py`, `signal_pdf_trials.py`) are recommended to be submitted as jobs. Other scripts finish on timescales such that running them in the terminal is sensible if desired.
 * All scripts that generate intermediate datasets (`background_pdf_trials.py`, `generate_background_pdfs.py`, `generate_signal_pdfs.py`, `signal_pdf_trials.py`) and plot randomized/scrambled data (`plot_variables.py`) support RNG seeding for reproducibility.
-  * Background trials take ~200,000-300,000 compute hours per channel/mass combination. Because of this, background trials have been *heavily* parallelized. The current parallelization technique is: 1 job array of 500 jobs, 2 cores per job, 10 trials per core. At full parallelization, this takes ~4-6 hours per channel/mass combination. However, due to heavy parallelization, RNG seeding is *not* recommended.
-  * Though the computation time for signal trials is not nearly as long, signal trials are submitted as a job array of 300 jobs. At full parallelization, signal trials for a channel/mass combination can be calculated ~1-2 minutes.
+  * Background trials have been *heavily* parallelized. The current parallelization technique is: 1 job array of 500 jobs, 2 cores per job, 10 trials per core. However, due to heavy parallelization, RNG seeding is *not* recommended.
+  * Signal trials are submitted as a job array of 500 jobs, 1 core per job, 2 trials per core. As with background trials, RNG seeding is *not* recommended due to parallelization.
