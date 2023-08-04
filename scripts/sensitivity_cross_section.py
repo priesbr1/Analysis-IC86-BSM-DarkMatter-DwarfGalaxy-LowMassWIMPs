@@ -139,6 +139,8 @@ bkg_ns = np.array(bkg_ns, dtype=int)
 bkg_TS = np.array(bkg_TS)
 med_bkg_TS = np.median(bkg_TS)
 print("Median background TS:", med_bkg_TS)
+#bkg_TS_90 = np.percentile(bkg_TS, 90)
+#print("90th percentile background TS:", bkg_TS_90)
 
 sig_file = args.signal_trials + "sig_trials_" + args.channel + "_" + str(args.mass) + ".txt"
 sig_trials = np.genfromtxt(sig_file, delimiter="\t")
@@ -156,8 +158,10 @@ sig_TS = np.array(sig_TS)
 for ni in sorted(np.unique(sig_ni)):
     ni_TS = np.array(sig_TS[sig_ni == ni])
     TS_frac = len(np.where(ni_TS > med_bkg_TS)[0])/len(ni_TS)
+    #TS_frac = len(np.where(ni_TS > bkg_TS_90)[0])/len(ni_TS)
     print("Fraction of trials above threshold at %i injected events: %s"%(ni, TS_frac))
     if TS_frac > 0.9:
+    #if TS_frac > 0.5:
         flux = inj.mu2flux(ni)
         sigma_v = flux/(baseline * J_factor_sum * scale_factor)
         print("Annihilation cross section for (%s,%i): %s cm^3 s^-1"%(args.channel, args.mass, str(sigma_v)))
