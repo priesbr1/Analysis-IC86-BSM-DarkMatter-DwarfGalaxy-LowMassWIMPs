@@ -111,7 +111,7 @@ parser.add_argument("-m", "--mass", type=int, default=10,
                     dest="mass", help="WIMP mass to rub background trials for")
 parser.add_argument("-t", "--background_trials", type=str, default="/mnt/home/priesbr1/DM_Search/data/trials_results/trials_bkg_360deg_Jmax_100kbe/",
                     dest="background_trials", help="folder containing background trials results")
-parser.add_argument("-o", "--outfolder", type=str, default="/mnt/home/priesbr1/DM_Search/data/trials_results/unblinded_trials_360deg_Jmax/",
+parser.add_argument("-o", "--outfolder", type=str, default="/mnt/home/priesbr1/DM_Search/data/trials_results/trials_unblinded_360deg_Jmax/",
                     dest="outfolder", help="output folder for trials results")
 args = parser.parse_args()
 
