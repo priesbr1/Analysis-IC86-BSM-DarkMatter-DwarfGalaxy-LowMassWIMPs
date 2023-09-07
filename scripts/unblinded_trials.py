@@ -173,6 +173,8 @@ for i in range(len(bkg_trials)):
 
 outfile = "unblinded_trials_" + args.channel + "_" + str(args.mass) + ".txt"
 
+t1 = time.time()
+
 angles = np.zeros((len(nu_decs), len(sources)), dtype=float)
 for j in range(len(sources)):
     angles[:,j] = calculate_angle(dec[j], ra[j], nu_decs, nu_ras)
@@ -225,3 +227,6 @@ for j, source in enumerate(names):
     f.write("%s \t %s \t %s \t "%(bfs[j], tss[j], sigmas[j]))
 f.write("%s \t %s \t %s \n"%(bf, ts, sigma))
 f.close()
+
+t2 = time.time()
+print("Time: %.2f sec"%(t2-t1))
