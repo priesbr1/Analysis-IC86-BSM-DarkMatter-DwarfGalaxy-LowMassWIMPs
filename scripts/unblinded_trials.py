@@ -212,7 +212,7 @@ sigmas = [np.maximum(0.0,p2sigma(p)) for p in p_values]
 bf = int(np.round(np.sum(bfs * J_factors/np.sum(J_factors))))
 ts = np.sum(np.array(tss) * J_factors/np.sum(J_factors))
 perc = scipy.stats.percentileofscore(bkg_TS[:,-1], ts)
-p_value = (1-perc)/100
+p_value = 1-(perc/100)
 sigma = p2sigma(p_value)
 
 f = open(args.outfolder+outfile, "w")
