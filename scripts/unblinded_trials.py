@@ -2,6 +2,7 @@ import numpy as np
 import glob
 import argparse
 import scipy
+from scipy import special, stats
 import time
 import os,sys
 
@@ -125,14 +126,11 @@ nu_ras = []
 
 for filename in datafiles:
     season = np.load(filename)
-    nu_decs.extend(season["dec"][(season["logE"] >= np.log10(energy_cut[0])) & (season["logE"] <= np.log10(energy_cut[1]))]
-    nu_ras.extend(season["ra"][(season["logE"] >= np.log10(energy_cut[0])) & (season["logE"] <= np.log10(energy_cut[1]))]
-
-nu_decs = np.array(nu_decs)
-nu_ras = np.array(nu_ras)
+    nu_decs.extend(season["dec"][(season["logE"] >= np.log10(energy_cut[0])) & (season["logE"] <= np.log10(energy_cut[1]))])
+    nu_ras.extend(season["ra"][(season["logE"] >= np.log10(energy_cut[0])) & (season["logE"] <= np.log10(energy_cut[1]))])
 
 bkg_pdfs = np.load(args.bkg_pdfs, allow_pickle=True)
-bkg_pdfs = bkg_pfds.item()
+bkg_pdfs = bkg_pdfs.item()
 sig_pdfs = np.load(args.sig_pdfs, allow_pickle=True)
 sig_pdfs = sig_pdfs.item()
 
@@ -164,7 +162,7 @@ sources = np.genfromtxt(args.sources, delimiter=",", dtype=("U20",float,float,fl
 names, ra, dec, J_factors = extract_source_info(sources, args.J_type, J_indices_map)
 
 background_file = args.background_trials + "bkg_trials_" + args.channel + "_" + str(args.mass) + ".txt"
-background_trials = np.genfromtxt(background_file, delimiter="\t")
+bkg_trials = np.genfromtxt(background_file, delimiter="\t")
 
 bkg_TS = np.zeros((len(bkg_trials), len(sources)+1), dtype=float)
 for i in range(len(bkg_trials)):
@@ -182,7 +180,7 @@ for j in range(len(sources)):
 N = len(nu_decs)
 llhs = []
 
-for j, source in enumerate(sources):
+for j, source in enumerate(names):
     N = len(angles[:,j])
 
     source_llh = []
@@ -208,8 +206,8 @@ for L,bf in zip(llhs,bfs):
 p_values = []
 for j, ts in enumerate(tss):
     perc = scipy.stats.percentileofscore(bkg_TS[:,j], ts)
-    p_values.append((1-perc)/100)
-sigmas = p2sigma(p_values)
+    p_values.append(1-(perc/100))
+sigmas = [np.maximum(0.0,p2sigma(p)) for p in p_values]
 
 bf = int(np.round(np.sum(bfs * J_factors/np.sum(J_factors))))
 ts = np.sum(np.array(tss) * J_factors/np.sum(J_factors))
