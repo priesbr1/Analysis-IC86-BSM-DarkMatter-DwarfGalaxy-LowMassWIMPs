@@ -40,7 +40,10 @@ for channel in cross_sections.keys():
 ax.semilogx()
 ax.semilogy()
 ax.set_xlabel(r"$m_{WIMP}$ [GeV/c$^{2}$]", fontsize=12)
-ax.set_ylabel(r"$\langle \sigma v \rangle$ Sensitivity [cm$^{3}$ s$^{-1}$]", fontsize=12)
+if "unblind" in args.filename:
+    ax.set_ylabel(r"$\langle \sigma v \rangle$ Limits [cm$^{3}$ s$^{-1}$]", fontsize=12)
+else:
+    ax.set_ylabel(r"$\langle \sigma v \rangle$ Sensitivity [cm$^{3}$ s$^{-1}$]", fontsize=12)
 ax.legend(loc="best", ncol=2, prop={"size":12}, labelspacing=0.5)
 ax.grid(color="grey", linestyle="-", linewidth=0.5, alpha=0.5)
 plt.tight_layout()
@@ -89,7 +92,10 @@ for channel in cross_sections.keys():
         sigma_v.append(cross_sections[channel][mass])
     
     ax.plot(m_WIMP, sigma_v, color=colors[channel], linestyle="-", linewidth=2)
-ax.plot([], [], color="black", linestyle="-", label="Current Sensitivities (29DG, 90% CL)", linewidth=2)
+if "unblind" in args.filename:
+    ax.plot([], [], color="black", linestyle="-", label="Current Limits (29DG, 90% CL)", linewidth=2)
+else:
+    ax.plot([], [], color="black", linestyle="-", label="Current Sensitivities (29DG, 90% CL)", linewidth=2)
 
 for i, result in enumerate(comps.keys()):
     detector, year, location, confidence = result.split("_")
