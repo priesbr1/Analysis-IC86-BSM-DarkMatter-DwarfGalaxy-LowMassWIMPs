@@ -128,9 +128,10 @@ inj.fill(dec, multillh.exp, multillh.mc, multillh.livetime, src_w=J_factors)
 
 trials_file = args.trials + "unblinded_trials_" + args.channel + "_" + str(args.mass) + ".txt"
 trials = np.genfromtxt(trials_file, delimiter="\t")
-ns = trials[0][-3]
+ns = trials[-3]
 flux = inj.mu2flux(ns)
 sigma_v = flux/(baseline * J_factor_sum * scale_factor)
+print("Annihilation cross section for (%s,%i): %s cm^3 s^-1"%(args.channel, args.mass, str(sigma_v)))
 
 try:
     cross_sections = np.load(args.outfile, allow_pickle=True)
