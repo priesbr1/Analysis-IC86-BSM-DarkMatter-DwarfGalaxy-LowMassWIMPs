@@ -2,6 +2,7 @@ import numpy as np
 import argparse
 import time
 import math
+from scipy.interpolate import interp1d
 
 from skylab.ps_llh import PointSourceLLH, MultiPointSourceLLH
 from skylab.ps_injector import PointSourceInjector
@@ -159,73 +160,128 @@ sig_TS = np.array(sig_TS)
 
 # Median
 print("Median:")
+ns = []
+fracs = []
 for ni in sorted(np.unique(sig_ni)):
+    ns.append(ni)
     ni_TS = np.array(sig_TS[sig_ni == ni])
     TS_frac = len(np.where(ni_TS > bkg_TS_med)[0])/len(ni_TS)
+    fracs.append(TS_frac)
     print("  Fraction of trials above threshold at %i injected events: %s"%(ni, TS_frac))
     if TS_frac > 0.9:
-        ns_med = ni
-        print("  Sensitivity threshold: %i"%ns_med)
-        flux = inj.mu2flux(ni)
-        sigma_v_med = flux/(baseline * J_factor_sum * scale_factor)
-        print("  Annihilation cross section for (%s,%i): %s cm^3 s^-1"%(args.channel, args.mass, str(sigma_v_med)))
         break
+
+interpolator_ns = interp1d(fracs,ns)
+interpolator_frac = interp1d(ns,fracs)
+
+ns_med = int(np.round(interpolator_ns(0.9)))
+TS_frac_med = interpolator_frac(ns_med)
+print("  Estimated sensitivity threshold: %i"%ns_med)
+print("  Estimated fraction of trials above sensitivity threshold: %s"%(TS_frac_med))
+
+flux = inj.mu2flux(ns_med)
+sigma_v_med = flux/(baseline * J_factor_sum * scale_factor)
+print("  Annihilation cross section for (%s,%i): %s cm^3 s^-1"%(args.channel, args.mass, str(sigma_v_med)))
 
 # Upper 1 sigma
 print("Upper 1 sigma:")
+ns = []
+fracs = []
 for ni in sorted(np.unique(sig_ni)):
+    ns.append(ni)
     ni_TS = np.array(sig_TS[sig_ni == ni])
     TS_frac = len(np.where(ni_TS > bkg_TS_up1)[0])/len(ni_TS)
+    fracs.append(TS_frac)
     print("  Fraction of trials above threshold at %i injected events: %s"%(ni, TS_frac))
     if TS_frac > 0.9:
-        ns_up1 = ni
-        print("  Sensitivity threshold: %i"%ns_up1)
-        flux = inj.mu2flux(ni)
-        sigma_v_up1 = flux/(baseline * J_factor_sum * scale_factor)
-        print("  Annihilation cross section for (%s,%i): %s cm^3 s^-1"%(args.channel, args.mass, str(sigma_v_up1)))
         break
+
+interpolator_ns = interp1d(fracs,ns)
+interpolator_frac = interp1d(ns,fracs)
+
+ns_up1 = int(np.round(interpolator_ns(0.9)))
+TS_frac_up1 = interpolator_frac(ns_up1)
+print("  Estimated sensitivity threshold: %i"%ns_up1)
+print("  Estimated fraction of trials above sensitivity threshold: %s"%(TS_frac_up1))
+
+flux = inj.mu2flux(ns_up1)
+sigma_v_up1 = flux/(baseline * J_factor_sum * scale_factor)
+print("  Annihilation cross section for (%s,%i): %s cm^3 s^-1"%(args.channel, args.mass, str(sigma_v_up1)))
 
 # Lower 1 sigma
 print("Lower 1 sigma:")
+ns = []
+fracs = []
 for ni in sorted(np.unique(sig_ni)):
+    ns.append(ni)
     ni_TS = np.array(sig_TS[sig_ni == ni])
     TS_frac = len(np.where(ni_TS > bkg_TS_low1)[0])/len(ni_TS)
+    fracs.append(TS_frac)
     print("  Fraction of trials above threshold at %i injected events: %s"%(ni, TS_frac))
     if TS_frac > 0.9:
-        ns_low1 = ni
-        print("  Sensitivity threshold: %i"%ns_low1)
-        flux = inj.mu2flux(ni)
-        sigma_v_low1 = flux/(baseline * J_factor_sum * scale_factor)
-        print("  Annihilation cross section for (%s,%i): %s cm^3 s^-1"%(args.channel, args.mass, str(sigma_v_low1)))
         break
+
+interpolator_ns = interp1d(fracs,ns)
+interpolator_frac = interp1d(ns,fracs)
+
+ns_low1 = int(np.round(interpolator_ns(0.9)))
+TS_frac_low1 = interpolator_frac(ns_low1)
+print("  Estimated sensitivity threshold: %i"%ns_low1)
+print("  Estimated fraction of trials above sensitivity threshold: %s"%(TS_frac_low1))
+
+flux = inj.mu2flux(ns_low1)
+sigma_v_low1 = flux/(baseline * J_factor_sum * scale_factor)
+print("  Annihilation cross section for (%s,%i): %s cm^3 s^-1"%(args.channel, args.mass, str(sigma_v_low1)))
 
 # Upper 2 sigma
 print("Upper 2 sigma:")
+ns = []
+fracs = []
 for ni in sorted(np.unique(sig_ni)):
+    ns.append(ni)
     ni_TS = np.array(sig_TS[sig_ni == ni])
     TS_frac = len(np.where(ni_TS > bkg_TS_up2)[0])/len(ni_TS)
+    fracs.append(TS_frac)
     print("  Fraction of trials above threshold at %i injected events: %s"%(ni, TS_frac))
     if TS_frac > 0.9:
-        ns_up2 = ni
-        print("  Sensitivity threshold: %i"%ns_up2)
-        flux = inj.mu2flux(ni)
-        sigma_v_up2 = flux/(baseline * J_factor_sum * scale_factor)
-        print("  Annihilation cross section for (%s,%i): %s cm^3 s^-1"%(args.channel, args.mass, str(sigma_v_up2)))
         break
+
+interpolator_ns = interp1d(fracs,ns)
+interpolator_frac = interp1d(ns,fracs)
+
+ns_up2 = int(np.round(interpolator_ns(0.9)))
+TS_frac_up2 = interpolator_frac(ns_up2)
+print("  Estimated sensitivity threshold: %i"%ns_up2)
+print("  Estimated fraction of trials above sensitivity threshold: %s"%(TS_frac_up2))
+
+flux = inj.mu2flux(ns_up2)
+sigma_v_up2 = flux/(baseline * J_factor_sum * scale_factor)
+print("  Annihilation cross section for (%s,%i): %s cm^3 s^-1"%(args.channel, args.mass, str(sigma_v_up2)))
 
 # Lower 2 sigma
 print("Lower 2 sigma:")
+ns = []
+fracs = []
 for ni in sorted(np.unique(sig_ni)):
+    ns.append(ni)
     ni_TS = np.array(sig_TS[sig_ni == ni])
     TS_frac = len(np.where(ni_TS > bkg_TS_low2)[0])/len(ni_TS)
+    fracs.append(TS_frac)
     print("  Fraction of trials above threshold at %i injected events: %s"%(ni, TS_frac))
     if TS_frac > 0.9:
-        ns_low2 = ni
-        print("  Sensitivity threshold: %i"%ns_low2)
-        flux = inj.mu2flux(ni)
-        sigma_v_low2 = flux/(baseline * J_factor_sum * scale_factor)
-        print("  Annihilation cross section for (%s,%i): %s cm^3 s^-1"%(args.channel, args.mass, str(sigma_v_low2)))
         break
+
+interpolator_ns = interp1d(fracs,ns)
+interpolator_frac = interp1d(ns,fracs)
+
+ns_low2 = int(np.round(interpolator_ns(0.9)))
+TS_frac_low2 = interpolator_frac(ns_low2)
+print("  Estimated sensitivity threshold: %i"%ns_low2)
+print("  Estimated fraction of trials above sensitivity threshold: %s"%(TS_frac_low2))
+
+flux = inj.mu2flux(ns_low2)
+sigma_v_low2 = flux/(baseline * J_factor_sum * scale_factor)
+print("  Annihilation cross section for (%s,%i): %s cm^3 s^-1"%(args.channel, args.mass, str(sigma_v_low2)))
 
 try:
     cross_sections = np.load(args.outfile, allow_pickle=True)
