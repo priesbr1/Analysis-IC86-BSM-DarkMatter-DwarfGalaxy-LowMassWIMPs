@@ -2,6 +2,7 @@ import numpy as np
 import argparse
 import time
 import math
+from scipy.interpolate import interp1d
 
 from skylab.ps_llh import PointSourceLLH, MultiPointSourceLLH
 from skylab.ps_injector import PointSourceInjector
@@ -155,17 +156,31 @@ sig_ni = np.array(sig_ni, dtype=int)
 sig_ns = np.array(sig_ns, dtype=int)
 sig_TS = np.array(sig_TS)
 
+ns = []
+fracs = []
+
 for ni in sorted(np.unique(sig_ni)):
+    ns.append(ni)
     ni_TS = np.array(sig_TS[sig_ni == ni])
     TS_frac = len(np.where(ni_TS > med_bkg_TS)[0])/len(ni_TS)
+    fracs.append(TS_frac)
     #TS_frac = len(np.where(ni_TS > bkg_TS_90)[0])/len(ni_TS)
     print("Fraction of trials above threshold at %i injected events: %s"%(ni, TS_frac))
     if TS_frac > 0.9:
     #if TS_frac > 0.5:
-        flux = inj.mu2flux(ni)
-        sigma_v = flux/(baseline * J_factor_sum * scale_factor)
-        print("Annihilation cross section for (%s,%i): %s cm^3 s^-1"%(args.channel, args.mass, str(sigma_v)))
         break
+
+interpolator_ns = interp1d(fracs,ns)
+interpolator_frac = interp1d(ns,fracs)
+
+ns_med = int(np.round(interpolator_ns(0.9)))
+TS_frac_med = interpolator_frac(ns_med)
+print("Estimated sensitivity threshold: %i"%ns_med)
+print("Estimated fraction of trials above sensitivity threshold: %s"%(TS_frac_med))
+
+flux = inj.mu2flux(ns_med)
+sigma_v = flux/(baseline * J_factor_sum * scale_factor)
+print("Annihilation cross section for (%s,%i): %s cm^3 s^-1"%(args.channel, args.mass, str(sigma_v)))
 
 try:
     cross_sections = np.load(args.outfile, allow_pickle=True)
