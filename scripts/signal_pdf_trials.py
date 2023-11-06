@@ -109,7 +109,8 @@ def run_one_trial(ni_source, data, bkg_pdfs, sig_pdfs, source, channel, mass, J_
 
 #in_events = np.concatenate((np.arange(1,10,1,dtype=int), np.linspace(10,50,20,dtype=int)))
 #in_events = np.concatenate((np.arange(1,10,1,dtype=int), np.linspace(10,30,20,dtype=int,endpoint=False), np.arange(30,300+30/2,30,dtype=int)))
-in_events = np.concatenate((np.arange(10,100,10,dtype=int),np.arange(100,1000+30/2,30,dtype=int)))
+#in_events = np.concatenate((np.arange(10,100,10,dtype=int),np.arange(100,1000+30/2,30,dtype=int)))
+in_events = np.arange(1,10,1,dtype=int)
 #in_events = np.arange(100,1000+30/2,30,dtype=int)
 #in_events = np.concatenate((np.arange(10,100,10,dtype=int),np.arange(100,1000,30,dtype=int),np.arange(1000,10000,1000,dtype=int),np.arange(10000,100000+10000/2,10000,dtype=int)))
 #in_events = np.concatenate((np.arange(100,1000,30,dtype=int),np.arange(1000,10000,1000,dtype=int),np.arange(10000,100000+10000/2,10000,dtype=int)))
