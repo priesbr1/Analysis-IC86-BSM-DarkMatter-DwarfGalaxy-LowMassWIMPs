@@ -158,26 +158,33 @@ sig_ni = np.array(sig_ni, dtype=int)
 sig_ns = np.array(sig_ns, dtype=int)
 sig_TS = np.array(sig_TS)
 
-# Median
-print("Median:")
 ns = []
-fracs = []
+thresholds = []
 for ni in sorted(np.unique(sig_ni)):
     ns.append(ni)
     ni_TS = np.array(sig_TS[sig_ni == ni])
+    tenth_perc = np.percentile(ni_TS, 10)
+    thresholds.append(tenth_perc)
     TS_frac = len(np.where(ni_TS > bkg_TS_med)[0])/len(ni_TS)
-    fracs.append(TS_frac)
-    print("  Fraction of trials above threshold at %i injected events: %s"%(ni, TS_frac))
-    if TS_frac > 0.9:
-        break
+    print("Fraction of trials above threshold at %i injected events: %s"%(ni, TS_frac))
 
-interpolator_ns = interp1d(fracs,ns)
-interpolator_frac = interp1d(ns,fracs)
+p90 = []
 
-ns_med = int(np.round(interpolator_ns(0.9)))
-TS_frac_med = interpolator_frac(ns_med)
+for n,thresh in zip(ns,thresholds):
+    n_bkg = len(np.where(bkg_TS < thresh)[0])
+    p90.append(n_bkg/len(bkg_TS))
+
+ns,p90 = zip(*sorted(zip(ns,p90)))
+
+interpolator_ns = interp1d(p90,ns)
+interpolator_p90 = interp1d(ns,p90)
+
+# Median
+print("Median:")
+ns_med = int(np.round(interpolator_ns(0.5)))
+p90_med = interpolator_p90(ns_med)
 print("  Estimated sensitivity threshold: %i"%ns_med)
-print("  Estimated fraction of trials above sensitivity threshold: %s"%(TS_frac_med))
+print("  Estimated probability of 90%% exclusion at sensitivity threshold: %s"%(p90_med))
 
 flux = inj.mu2flux(ns_med)
 sigma_v_med = flux/(baseline * J_factor_sum * scale_factor)
@@ -185,24 +192,10 @@ print("  Annihilation cross section for (%s,%i): %s cm^3 s^-1"%(args.channel, ar
 
 # Upper 1 sigma
 print("Upper 1 sigma:")
-ns = []
-fracs = []
-for ni in sorted(np.unique(sig_ni)):
-    ns.append(ni)
-    ni_TS = np.array(sig_TS[sig_ni == ni])
-    TS_frac = len(np.where(ni_TS > bkg_TS_up1)[0])/len(ni_TS)
-    fracs.append(TS_frac)
-    print("  Fraction of trials above threshold at %i injected events: %s"%(ni, TS_frac))
-    if TS_frac > 0.9:
-        break
-
-interpolator_ns = interp1d(fracs,ns)
-interpolator_frac = interp1d(ns,fracs)
-
-ns_up1 = int(np.round(interpolator_ns(0.9)))
-TS_frac_up1 = interpolator_frac(ns_up1)
+ns_up1 = int(np.round(interpolator_ns(0.84)))
+p90_up1 = interpolator_p90(ns_up1)
 print("  Estimated sensitivity threshold: %i"%ns_up1)
-print("  Estimated fraction of trials above sensitivity threshold: %s"%(TS_frac_up1))
+print("  Estimated probability of 90%% exclusion at sensitivity threshold: %s"%(p90_up1))
 
 flux = inj.mu2flux(ns_up1)
 sigma_v_up1 = flux/(baseline * J_factor_sum * scale_factor)
@@ -210,24 +203,10 @@ print("  Annihilation cross section for (%s,%i): %s cm^3 s^-1"%(args.channel, ar
 
 # Lower 1 sigma
 print("Lower 1 sigma:")
-ns = []
-fracs = []
-for ni in sorted(np.unique(sig_ni)):
-    ns.append(ni)
-    ni_TS = np.array(sig_TS[sig_ni == ni])
-    TS_frac = len(np.where(ni_TS > bkg_TS_low1)[0])/len(ni_TS)
-    fracs.append(TS_frac)
-    print("  Fraction of trials above threshold at %i injected events: %s"%(ni, TS_frac))
-    if TS_frac > 0.9:
-        break
-
-interpolator_ns = interp1d(fracs,ns)
-interpolator_frac = interp1d(ns,fracs)
-
-ns_low1 = int(np.round(interpolator_ns(0.9)))
-TS_frac_low1 = interpolator_frac(ns_low1)
+ns_low1 = int(np.round(interpolator_ns(0.16)))
+p90_low1 = interpolator_p90(ns_low1)
 print("  Estimated sensitivity threshold: %i"%ns_low1)
-print("  Estimated fraction of trials above sensitivity threshold: %s"%(TS_frac_low1))
+print("  Estimated probability of 90%% exclusion at sensitivity threshold: %s"%(p90_low1))
 
 flux = inj.mu2flux(ns_low1)
 sigma_v_low1 = flux/(baseline * J_factor_sum * scale_factor)
@@ -235,24 +214,10 @@ print("  Annihilation cross section for (%s,%i): %s cm^3 s^-1"%(args.channel, ar
 
 # Upper 2 sigma
 print("Upper 2 sigma:")
-ns = []
-fracs = []
-for ni in sorted(np.unique(sig_ni)):
-    ns.append(ni)
-    ni_TS = np.array(sig_TS[sig_ni == ni])
-    TS_frac = len(np.where(ni_TS > bkg_TS_up2)[0])/len(ni_TS)
-    fracs.append(TS_frac)
-    print("  Fraction of trials above threshold at %i injected events: %s"%(ni, TS_frac))
-    if TS_frac > 0.9:
-        break
-
-interpolator_ns = interp1d(fracs,ns)
-interpolator_frac = interp1d(ns,fracs)
-
-ns_up2 = int(np.round(interpolator_ns(0.9)))
-TS_frac_up2 = interpolator_frac(ns_up2)
+ns_up2 = int(np.round(interpolator_ns(0.975)))
+p90_up2 = interpolator_p90(ns_up2)
 print("  Estimated sensitivity threshold: %i"%ns_up2)
-print("  Estimated fraction of trials above sensitivity threshold: %s"%(TS_frac_up2))
+print("  Estimated probability of 90%% exclusion at sensitivity threshold: %s"%(p90_up2))
 
 flux = inj.mu2flux(ns_up2)
 sigma_v_up2 = flux/(baseline * J_factor_sum * scale_factor)
@@ -260,24 +225,10 @@ print("  Annihilation cross section for (%s,%i): %s cm^3 s^-1"%(args.channel, ar
 
 # Lower 2 sigma
 print("Lower 2 sigma:")
-ns = []
-fracs = []
-for ni in sorted(np.unique(sig_ni)):
-    ns.append(ni)
-    ni_TS = np.array(sig_TS[sig_ni == ni])
-    TS_frac = len(np.where(ni_TS > bkg_TS_low2)[0])/len(ni_TS)
-    fracs.append(TS_frac)
-    print("  Fraction of trials above threshold at %i injected events: %s"%(ni, TS_frac))
-    if TS_frac > 0.9:
-        break
-
-interpolator_ns = interp1d(fracs,ns)
-interpolator_frac = interp1d(ns,fracs)
-
-ns_low2 = int(np.round(interpolator_ns(0.9)))
-TS_frac_low2 = interpolator_frac(ns_low2)
+ns_low2 = int(np.round(interpolator_ns(0.025)))
+p90_low2 = interpolator_p90(ns_low2)
 print("  Estimated sensitivity threshold: %i"%ns_low2)
-print("  Estimated fraction of trials above sensitivity threshold: %s"%(TS_frac_low2))
+print("  Estimated probability of 90%% exclusion at sensitivity threshold: %s"%(p90_low2))
 
 flux = inj.mu2flux(ns_low2)
 sigma_v_low2 = flux/(baseline * J_factor_sum * scale_factor)
