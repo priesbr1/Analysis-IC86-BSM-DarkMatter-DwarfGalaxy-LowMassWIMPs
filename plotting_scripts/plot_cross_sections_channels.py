@@ -70,7 +70,7 @@ for mass in cross_sections[args.channel].keys():
     sigma_v.append(cross_sections[args.channel][mass])
     
     ax.plot(m_WIMP, sigma_v, color="black", linestyle="-", linewidth=2)
-if "unblind" in args.filename:
+if ("unblind" in args.filename) or ("upper_limit" in args.filename):
     ax.plot([], [], color="black", linestyle="-", label="Current Limits (29DG, 90% CL)", linewidth=2)
 else:
     ax.plot([], [], color="black", linestyle="-", label="Current Sensitivities (29DG, 90% CL)", linewidth=2)
