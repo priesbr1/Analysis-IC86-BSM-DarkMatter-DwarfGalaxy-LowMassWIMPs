@@ -40,6 +40,40 @@ colors = ["tab:blue", "tab:orange", "tab:green", "tab:red", "tab:purple", "tab:c
 linestyles = {"b":"-", "Mu":"-", "Tau":"-", "W":"-", "Nu":"-", "Nue":"--", "NuMu":":", "NuTau":"-."}
 nu_channels = ["Nu", "Nue", "NuMu", "NuTau"]
 
+fig = plt.figure(figsize=(10,6))
+ax = fig.add_subplot(111)
+fig.subplots_adjust(top=0.85)
+fig.patch.set_facecolor("white")
+
+m_WIMP_lims = []
+m_WIMP_bands = []
+sigma_v_lims = []
+sigma_v_bands = []
+for mass in upper_limits[args.channel].keys():
+    m_WIMP_lims.append(mass)
+    sigma_v_lims.append(upper_limits[args.channel][mass])
+    m_WIMP_bands.append(mass)
+    sigma_v_bands.append([])
+    for sigma in bands[args.channel][mass]["Cross Section"].keys():
+        sigma_v_bands[-1].append(bands[args.channel][mass]["Cross Section"][sigma])
+    sigma_v_bands[-1] = sorted(sigma_v_bands[-1])
+
+ax.plot(m_WIMP_bands, [sigma_v_bands[i][2] for i in range(len(sigma_v_bands))], color="black", linestyle="-", linewidth=2)
+ax.fill_between(m_WIMP_bands, [sigma_v_bands[i][1] for i in range(len(sigma_v_bands))], [sigma_v_bands[i][3] for i in range(len(sigma_v_bands))], color="tab:gray", alpha=0.5, linestyle="-", linewidth=2)
+ax.fill_between(m_WIMP_bands, [sigma_v_bands[i][0] for i in range(len(sigma_v_bands))], [sigma_v_bands[i][4] for i in range(len(sigma_v_bands))], color="tab:gray", alpha=0.5, linestyle="-", linewidth=2)
+ax.plot(m_WIMP_lims, sigma_v_lims, color="black", linestyle="--", linewidth=2)
+ax.plot([], [], color="black", linestyle="--", label="Current %s Limits (29DG, 90%% CL)"%legends[args.channel], linewidth=2)
+ax.plot([], [], color="black", linestyle="-", label="Current %s Sensitivities (29DG, 90%% CL)"%legends[args.channel], linewidth=2)
+ax.semilogx()
+ax.semilogy()
+ax.set_xlabel(r"$m_{WIMP}$ [GeV/c$^{2}$]", fontsize=12)
+ax.set_ylabel(r"$\langle \sigma v \rangle$ [cm$^{3}$ s$^{-1}$]", fontsize=12)
+ax.legend(loc="best", prop={"size":12}, labelspacing=0.5)
+ax.grid(color="grey", linestyle="-", linewidth=0.5, alpha=0.5)
+plt.tight_layout()
+plt.savefig(args.output + "cross_section_results_upper_limits_bands_%s_"%args.channel + params + ".png")
+print("Finished solo plot")
+
 comps = dict()
 comp_files = sorted(glob.glob(args.comparison+"*.csv"))
 for cf in comp_files:
@@ -87,8 +121,8 @@ for mass in upper_limits[args.channel].keys():
 ax.plot(m_WIMP_bands, [sigma_v_bands[i][2] for i in range(len(sigma_v_bands))], color="black", linestyle="-", linewidth=2)
 ax.fill_between(m_WIMP_bands, [sigma_v_bands[i][1] for i in range(len(sigma_v_bands))], [sigma_v_bands[i][3] for i in range(len(sigma_v_bands))], color="gray", alpha=0.5, linestyle="-", linewidth=2)
 ax.fill_between(m_WIMP_bands, [sigma_v_bands[i][0] for i in range(len(sigma_v_bands))], [sigma_v_bands[i][4] for i in range(len(sigma_v_bands))], color="gray", alpha=0.5, linestyle="-", linewidth=2)
-ax.plot(m_WIMP_lims, sigma_v_lims, marker="*", markerfacecolor="None", markeredgecolor="black", linewidth=0, markersize=15)
-ax.plot([], [], marker="*", markerfacecolor="None", markeredgecolor="black", label="Current Limits (29DG, 90% CL)", linewidth=0, markersize=15)
+ax.plot(m_WIMP_lims, sigma_v_lims, color="black", linestyle="--", linewidth=2)
+ax.plot([], [], color="black", linestyle="--", label="Current Limits (29DG, 90% CL)", linewidth=2)
 ax.plot([], [], color="black", linestyle="-", label="Current Sensitivities (29DG, 90% CL)", linewidth=2)
 
 for i, result in enumerate(comps.keys()):

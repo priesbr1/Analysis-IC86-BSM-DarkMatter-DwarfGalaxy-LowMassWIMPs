@@ -35,6 +35,38 @@ colors = ["tab:blue", "tab:orange", "tab:green", "tab:red", "tab:purple", "tab:c
 linestyles = {"b":"-", "Mu":"-", "Tau":"-", "W":"-", "Nu":"-", "Nue":"--", "NuMu":":", "NuTau":"-."}
 nu_channels = ["Nu", "Nue", "NuMu", "NuTau"]
 
+fig = plt.figure()
+ax = fig.add_subplot(111)
+fig.subplots_adjust(top=0.85)
+fig.patch.set_facecolor("white")
+
+m_WIMP = []
+sigma_v = []
+for mass in cross_sections[args.channel].keys():
+    m_WIMP.append(mass)
+    sigma_v.append([])
+    for sigma in cross_sections[args.channel][mass]["Cross Section"]:
+        sigma_v[-1].append(cross_sections[args.channel][mass]["Cross Section"][sigma])
+    sigma_v[-1] = sorted(sigma_v[-1])
+
+ax.plot(m_WIMP, [sigma_v[i][2] for i in range(len(sigma_v))], color="black", linestyle="-", linewidth=2)
+ax.fill_between(m_WIMP, [sigma_v[i][1] for i in range(len(sigma_v))], [sigma_v[i][3] for i in range(len(sigma_v))], color="gray", alpha=0.5, linestyle="-", linewidth=2)
+ax.fill_between(m_WIMP, [sigma_v[i][0] for i in range(len(sigma_v))], [sigma_v[i][4] for i in range(len(sigma_v))], color="gray", alpha=0.5, linestyle="-", linewidth=2)
+if "unblind" in args.filename:
+    ax.plot([], [], color="black", linestyle="-", label="Current %s Limits (29DG, 90%% CL)"%legends[args.channel], linewidth=2)
+else:
+    ax.plot([], [], color="black", linestyle="-", label="Current %s Sensitivities (29DG, 90%% CL)"%legends[args.channel], linewidth=2)
+
+ax.semilogx()
+ax.semilogy()
+ax.set_xlabel(r"$m_{WIMP}$ [GeV/c$^{2}$]", fontsize=12)
+ax.set_ylabel(r"$\langle \sigma v \rangle$ [cm$^{3}$ s$^{-1}$]", fontsize=12)
+ax.legend(loc="best")
+ax.grid(color="grey", linestyle="-", linewidth=0.5, alpha=0.5)
+plt.tight_layout()
+plt.savefig(args.output + "cross_section_results_bands_%s_"%args.channel + params + ".png")
+print("Finished solo plot")
+
 comps = dict()
 comp_files = sorted(glob.glob(args.comparison+"*.csv"))
 for cf in comp_files:
