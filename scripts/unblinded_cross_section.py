@@ -33,7 +33,7 @@ parser.add_argument("-t", "--trials", type=str, default="/mnt/home/priesbr1/DM_S
                     dest="trials", help="folder containing reaults from unblinded trials")
 parser.add_argument("-r", "--repo_path", type=str, default="/mnt/research/IceCube/datasets/",
                     dest="repo_path", help="repository path for SkyLab dataset")
-parser.add_argument("-o", "--outfile", type=str, default="/mnt/home/priesbr1/DM_Search/data/cross_section_results/unblinded_cross_section_results_360deg_Jmax_erange.npy",
+parser.add_argument("-o", "--outfile", type=str, default="/mnt/home/priesbr1/DM_Search/data/cross_section_results/cross_section_results_unblinded_360deg_Jmax_erange.npy",
                     dest="outfile", help="outfile to save results to")
 args = parser.parse_args()
 
