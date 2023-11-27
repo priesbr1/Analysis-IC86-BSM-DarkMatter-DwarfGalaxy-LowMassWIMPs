@@ -40,7 +40,9 @@ for channel in cross_sections.keys():
 ax.semilogx()
 ax.semilogy()
 ax.set_xlabel(r"$m_{WIMP}$ [GeV/c$^{2}$]", fontsize=12)
-if ("unblind" in args.filename) or ("upper_limit" in args.filename):
+if ("unblind" in args.filename):
+    ax.set_ylabel(r"$\langle \sigma v \rangle$ Best-Fit [cm$^{3}$ s$^{-1}$]", fontsize=12)
+elif ("upper_limit" in args.filename):
     ax.set_ylabel(r"$\langle \sigma v \rangle$ Limits [cm$^{3}$ s$^{-1}$]", fontsize=12)
 else:
     ax.set_ylabel(r"$\langle \sigma v \rangle$ Sensitivity [cm$^{3}$ s$^{-1}$]", fontsize=12)
@@ -92,7 +94,9 @@ for channel in cross_sections.keys():
         sigma_v.append(cross_sections[channel][mass])
     
     ax.plot(m_WIMP, sigma_v, color=colors[channel], linestyle="-", linewidth=2)
-if ("unblind" in args.filename) or ("upper_limit" in args.filename):
+if ("unblind" in args.filename):
+    ax.plot)[], [], color="black", linestyle="-", label="Current Best-Fot (29DG)", linewidth=2)
+elif ("upper_limit" in args.filename):
     ax.plot([], [], color="black", linestyle="-", label="Current Limits (29DG, 90% CL)", linewidth=2)
 else:
     ax.plot([], [], color="black", linestyle="-", label="Current Sensitivities (29DG, 90% CL)", linewidth=2)

@@ -52,7 +52,9 @@ for mass in cross_sections[args.channel].keys():
 ax.plot(m_WIMP, [sigma_v[i][2] for i in range(len(sigma_v))], color="black", linestyle="-", linewidth=2)
 ax.fill_between(m_WIMP, [sigma_v[i][1] for i in range(len(sigma_v))], [sigma_v[i][3] for i in range(len(sigma_v))], color="gray", alpha=0.5, linestyle="-", linewidth=2)
 ax.fill_between(m_WIMP, [sigma_v[i][0] for i in range(len(sigma_v))], [sigma_v[i][4] for i in range(len(sigma_v))], color="gray", alpha=0.5, linestyle="-", linewidth=2)
-if "unblind" in args.filename:
+if ("unblind" in args.filename):
+    ax.plot([], [], color="black", linestyle="-", label="Current %s Best-Fit (29DG)"%legends[args.channel], linewidth=2)
+elif ("upper_limit" in args.filename):
     ax.plot([], [], color="black", linestyle="-", label="Current %s Limits (29DG, 90%% CL)"%legends[args.channel], linewidth=2)
 else:
     ax.plot([], [], color="black", linestyle="-", label="Current %s Sensitivities (29DG, 90%% CL)"%legends[args.channel], linewidth=2)
@@ -110,7 +112,9 @@ for mass in cross_sections[args.channel].keys():
 ax.plot(m_WIMP, [sigma_v[i][2] for i in range(len(sigma_v))], color="black", linestyle="-", linewidth=2)
 ax.fill_between(m_WIMP, [sigma_v[i][1] for i in range(len(sigma_v))], [sigma_v[i][3] for i in range(len(sigma_v))], color="gray", alpha=0.5, linestyle="-", linewidth=2)
 ax.fill_between(m_WIMP, [sigma_v[i][0] for i in range(len(sigma_v))], [sigma_v[i][4] for i in range(len(sigma_v))], color="gray", alpha=0.5, linestyle="-", linewidth=2)
-if "unblind" in args.filename:
+if ("unblind" in args.filename):
+    ax.plot([], [], color="black", linestyle="-", label="Current Best-Fit (29DG)", linewidth=2)
+elif ("upper_limit" in args.filename):
     ax.plot([], [], color="black", linestyle="-", label="Current Limits (29DG, 90% CL)", linewidth=2)
 else:
     ax.plot([], [], color="black", linestyle="-", label="Current Sensitivities (29DG, 90% CL)", linewidth=2)

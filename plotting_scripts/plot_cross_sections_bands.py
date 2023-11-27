@@ -48,7 +48,9 @@ for channel in cross_sections.keys():
 ax.semilogx()
 ax.semilogy()
 ax.set_xlabel(r"$m_{WIMP}$ [GeV/c$^{2}$]", fontsize=12)
-if "unblind" in args.filename:
+if ("unblind" in args.filename):
+    ax.set_ylabel(r"$\langle \sigma v \rangle$ Best-Fit [cm$^{3}$ s$^{-1}$]", fontsize=12)
+elif ("upper_limits" in args.filename):
     ax.set_ylabel(r"$\langle \sigma v \rangle$ Limits [cm$^{3}$ s$^{-1}$]", fontsize=12)
 else:
     ax.set_ylabel(r"$\langle \sigma v \rangle$ Sensitivity [cm$^{3}$ s$^{-1}$]", fontsize=12)
@@ -105,7 +107,9 @@ for channel in cross_sections.keys():
     ax.plot(m_WIMP, [sigma_v[i][2] for i in range(len(sigma_v))], color=colors[channel], linestyle="-", linewidth=2)
     ax.fill_between(m_WIMP, [sigma_v[i][1] for i in range(len(sigma_v))], [sigma_v[i][3] for i in range(len(sigma_v))], color=colors[channel], alpha=0.5, linestyle="-", linewidth=2)
     ax.fill_between(m_WIMP, [sigma_v[i][0] for i in range(len(sigma_v))], [sigma_v[i][4] for i in range(len(sigma_v))], color=colors[channel], alpha=0.5, linestyle="-", linewidth=2)
-if "unblind" in args.filename:
+if ("unblind" in args.filename):
+    ax.plot([], [], color="black", linestyle="-", label="Current Best-Fit (29DG)", linewidth=2)
+elif ("upper_limit" in args.filename):
     ax.plot([], [], color="black", linestyle="-", label="Current Limits (29DG, 90% CL)", linewidth=2)
 else:
     ax.plot([], [], color="black", linestyle="-", label="Current Sensitivities (29DG, 90% CL)", linewidth=2)
