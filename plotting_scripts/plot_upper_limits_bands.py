@@ -20,7 +20,7 @@ args = parser.parse_args()
 if "bands" not in args.bands:
     raise RuntimeError("Cross sections file does not have bands")
 
-params = args.limits[args.limits.rfind("/")+len("cross_section_results_upper_limits")+2:args.limits.rfind(".")]
+params = args.limits[args.limits.rfind("/")+len("cross_section_results")+2:args.limits.rfind(".")]
 
 upper_limits = np.load(args.limits, allow_pickle=True)
 upper_limits = upper_limits.item()
@@ -57,7 +57,10 @@ for channel in upper_limits.keys():
     ax.fill_between(m_WIMP_bands, [sigma_v_bands[i][1] for i in range(len(sigma_v_bands))], [sigma_v_bands[i][3] for i in range(len(sigma_v_bands))], color=colors[channel], alpha=0.5, linestyle="-", linewidth=2)
     ax.fill_between(m_WIMP_bands, [sigma_v_bands[i][0] for i in range(len(sigma_v_bands))], [sigma_v_bands[i][4] for i in range(len(sigma_v_bands))], color=colors[channel], alpha=0.5, linestyle="-", linewidth=2)
     ax.plot(m_WIMP_lims, sigma_v_lims, marker="*", markerfacecolor=colors[channel], markeredgecolor="black", linewidth=0, markersize=15)
-ax.plot([], [], marker="*", markerfacecolor="None", markeredgecolor="black", label="Current Limits (29DG, 90% CL)", linewidth=0, markersize=15)
+if ("unblind" in args.limits):
+    ax.plot([], [], marker="*", markerfacecolor="None", markeredgecolor="black", label="Current Best-Fit (29DG)", linewidth=0, markersize=15)
+elif ("upper_limit" in args.limits):
+    ax.plot([], [], marker="*", markerfacecolor="None", markeredgecolor="black", label="Current Limits (29DG, 90% CL)", linewidth=0, markersize=15)
 ax.plot([], [], color="black", linestyle="-", label="Current Sensitivities (29DG, 90% CL)", linewidth=2)
 ax.semilogx()
 ax.semilogy()
@@ -67,7 +70,7 @@ ax.legend(bbox_to_anchor=(1.04,0.5), loc="center left", prop={"size":12}, labels
 #ax.legend(loc="best", ncol=2, prop={"size":12}, labelspacing=0.5)
 ax.grid(color="grey", linestyle="-", linewidth=0.5, alpha=0.5)
 plt.tight_layout()
-plt.savefig(args.output + "cross_section_results_upper_limits_bands_" + params + ".png")
+plt.savefig(args.output + "cross_section_results_bands_" + params + ".png")
 print("Finished solo plot")
 
 comps = dict()
@@ -122,7 +125,10 @@ for channel in upper_limits.keys():
     ax.fill_between(m_WIMP_bands, [sigma_v_bands[i][1] for i in range(len(sigma_v_bands))], [sigma_v_bands[i][3] for i in range(len(sigma_v_bands))], color=colors[channel], alpha=0.5, linestyle="-", linewidth=2)
     ax.fill_between(m_WIMP_bands, [sigma_v_bands[i][0] for i in range(len(sigma_v_bands))], [sigma_v_bands[i][4] for i in range(len(sigma_v_bands))], color=colors[channel], alpha=0.5, linestyle="-", linewidth=2)
     ax.plot(m_WIMP_lims, sigma_v_lims, marker="*", markerfacecolor=colors[channel], markeredgecolor="black", linewidth=0, markersize=15)
-ax.plot([], [], marker="*", markerfacecolor="None", markeredgecolor="black", label="Current Limits (29DG, 90% CL)", linewidth=0, markersize=15)
+if ("unblind" in args.limits):
+    ax.plot([], [], marker="*", markerfacecolor="None", markeredgecolor="black", label="Current Best-Fit (29DG)", linewidth=0, markersize=15)
+elif ("upper_limit" in args.limits):
+    ax.plot([], [], marker="*", markerfacecolor="None", markeredgecolor="black", label="Current Limits (29DG, 90% CL)", linewidth=0, markersize=15)
 ax.plot([], [], color="black", linestyle="-", label="Current Sensitivities (29DG, 90% CL)", linewidth=2)
 
 for i, result in enumerate(comps.keys()):
@@ -138,5 +144,5 @@ ax.set_ylabel(r"$\langle \sigma v \rangle$ [cm$^{3}$ s$^{-1}$]", fontsize=12)
 ax.legend(bbox_to_anchor=(1.04,0.5), loc="center left", prop={"size":12}, labelspacing=0.5)
 ax.grid(color="grey", linestyle="-", linewidth=0.5, alpha=0.5)
 plt.tight_layout()
-plt.savefig(args.output + "cross_section_results_upper_limits_bands_comparison_" + params + ".png")
+plt.savefig(args.output + "cross_section_results_bands_comparison_" + params + ".png")
 print("Finished comparison plot")
