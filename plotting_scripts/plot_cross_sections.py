@@ -95,7 +95,7 @@ for channel in cross_sections.keys():
     
     ax.plot(m_WIMP, sigma_v, color=colors[channel], linestyle="-", linewidth=2)
 if ("unblind" in args.filename):
-    ax.plot)[], [], color="black", linestyle="-", label="Current Best-Fot (29DG)", linewidth=2)
+    ax.plot([], [], color="black", linestyle="-", label="Current Best-Fit (29DG)", linewidth=2)
 elif ("upper_limit" in args.filename):
     ax.plot([], [], color="black", linestyle="-", label="Current Limits (29DG, 90% CL)", linewidth=2)
 else:
