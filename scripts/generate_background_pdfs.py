@@ -121,7 +121,7 @@ for i, source in enumerate(names):
     if args.channel not in pdfs[source].keys():
         pdfs[source][args.channel] = dict()
 
-    bkg_hist = calculate_background_pdf(filenames, ra[i], dec[i], source, energy_ranges[energy_list == args.mass], nbins)
+    bkg_hist = calculate_background_pdf(filenames, ra[i], dec[i], source, energy_ranges[energy_list.index(args.mass)], nbins)
     if args.mass not in pdfs[source][args.channel].keys():
         pdfs[source][args.channel][args.mass] = dict()
     pdfs[source][args.channel][args.mass]["Counts"] = bkg_hist[0][0]

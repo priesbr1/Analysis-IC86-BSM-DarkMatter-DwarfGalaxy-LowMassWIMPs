@@ -117,7 +117,7 @@ parser.add_argument("-o", "--outfolder", type=str, default="/mnt/home/priesbr1/D
 args = parser.parse_args()
 
 energy_list, energy_ranges, nbins = get_energy_ranges(args.channel, args.mass)
-energy_cut = energy_ranges[energy_list == args.mass]
+energy_cut = energy_ranges[energy_list.index(args.mass)]
 
 datafiles = sorted(glob.glob(args.data))
 
