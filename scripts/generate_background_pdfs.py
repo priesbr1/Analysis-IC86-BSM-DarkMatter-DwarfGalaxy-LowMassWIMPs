@@ -105,26 +105,29 @@ for i in range(len(sources)):
     ra = np.append(ra, sources[i][1]*np.pi/180.)
     dec = np.append(dec, sources[i][2]*np.pi/180.)
 
-try:
-    pdfs = np.load(args.outfile, allow_pickle=True)
-    pdfs = pdfs.item()
-    print("Found existing background PDFs at %s"%args.outfile)
-except:
-    print("No existing background PDFs found")
-    pdfs = dict()
-
 for i, source in enumerate(names):
+    energy_list, energy_ranges, nbins = get_energy_ranges(args.channel, args.mass)
+    energy_cut = energy_ranges[energy_list.index(args.mass)]
+    bkg_hist = calculate_background_pdf(filenames, ra[i], dec[i], source, energy_cut, nbins)
+
+    try:
+        pdfs = np.load(args.outfile, allow_pickle=True)
+        pdfs = pdfs.item()
+        if (i == 0):
+            print("Found existing background PDFs at %s"%args.outfile)
+    except:
+        if (i == 0):
+            print("No existing background PDFs found")
+        pdfs = dict()
+
     if names[i] not in pdfs.keys():
         pdfs[source] = dict()
-
-    energy_list, energy_ranges, nbins = get_energy_ranges(args.channel, args.mass)
     if args.channel not in pdfs[source].keys():
         pdfs[source][args.channel] = dict()
-
-    bkg_hist = calculate_background_pdf(filenames, ra[i], dec[i], source, energy_ranges[energy_list.index(args.mass)], nbins)
     if args.mass not in pdfs[source][args.channel].keys():
         pdfs[source][args.channel][args.mass] = dict()
+    
     pdfs[source][args.channel][args.mass]["Counts"] = bkg_hist[0][0]
     pdfs[source][args.channel][args.mass]["Bins"] = bkg_hist[0][1]
-
-np.save(args.outfile, pdfs)
+    
+    np.save(args.outfile, pdfs)
