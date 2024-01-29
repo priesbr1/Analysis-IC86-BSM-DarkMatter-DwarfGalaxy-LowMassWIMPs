@@ -123,7 +123,7 @@ for trial_set in sig_trials:
         plt.figure()
         plt.plot(ni_source, TS_med)
         plt.fill_between(ni_source, TS_low, TS_high, color="blue", alpha=0.2)
-        if (np.max(ni_vals)/np.min(ni_vals) > 100):
+        if (np.max(ni_vals)/np.min(ni_vals) > 1000):
             plt.xscale("log")
         plt.xlabel(r"$n_{\mathrm{injected}}$")
         plt.ylabel("Test Statistic")
@@ -147,7 +147,7 @@ for trial_set in sig_trials:
     plt.plot(ni_vals, ns_med, label="Data")
     plt.fill_between(ni_vals, ns_low, ns_high, color="blue", alpha=0.2)
     plt.plot(ni_vals, ni_vals, color="black", linestyle="dashed", label=r"$n_{\mathrm{signal}} = n_{\mathrm{injected}}$")
-    if (np.max(ni_vals)/np.min(ni_vals) > 100):
+    if (np.max(ni_vals)/np.min(ni_vals) > 1000):
         plt.xscale("log")
         plt.yscale("log")
     plt.xlabel(r"$n_{\mathrm{injected}}$")
@@ -161,7 +161,7 @@ for trial_set in sig_trials:
     plt.figure()
     plt.plot(ni_vals, TS_med)
     plt.fill_between(ni_vals, TS_low, TS_high, color="blue", alpha=0.2)
-    if (np.max(ni_vals)/np.min(ni_vals) > 100):
+    if (np.max(ni_vals)/np.min(ni_vals) > 1000):
         plt.xscale("log")
     plt.xlabel(r"$n_{\mathrm{injected}}$")
     plt.ylabel("Test Statistic")
