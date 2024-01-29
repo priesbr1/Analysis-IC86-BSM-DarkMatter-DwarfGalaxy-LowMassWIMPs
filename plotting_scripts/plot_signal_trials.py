@@ -109,7 +109,7 @@ for trial_set in sig_trials:
         plt.plot(ni_source, ns_med, label="Data")
         plt.fill_between(ni_source, ns_low, ns_high, color="blue", alpha=0.2)
         plt.plot(ni_source, ni_source, color="black", linestyle="dashed", label=r"$n_{\mathrm{signal}} = n_{\mathrm{injected}}$")
-        if (np.max(ni_vals)/np.min(ni_vals) > 100):
+        if (np.max(ni_vals)/np.min(ni_vals) > 1000):
             plt.xscale("log")
             plt.yscale("log")
         plt.xlabel(r"$n_{\mathrm{injected}}$")
